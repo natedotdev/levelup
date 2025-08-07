@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'data/word_list.dart'; // Importing wordfile dart list 
 
 void main() {
-  runApp(const LevelUpApp());
+  runApp(LevelUpApp());
 }
 
+// Main app widget
 class LevelUpApp extends StatelessWidget {
   const LevelUpApp({super.key});
 
@@ -11,82 +13,87 @@ class LevelUpApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LevelUp',
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: WordScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+// Word display screen
+class WordScreen extends StatelessWidget {
+  const WordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Dummy word of the day
-    final String word = "das Buch";
-    final String translation = "book";
-    final List<Map<String, String>> sentences = [
-      {
-        'tense': 'Present',
-        'german': 'Ich lese das Buch.',
-        'english': 'I read the book.',
-      },
-      {
-        'tense': 'Simple Past',
-        'german': 'Ich las das Buch.',
-        'english': 'I read the book (past).',
-      },
-      {
-        'tense': 'Perfect',
-        'german': 'Ich habe das Buch gelesen.',
-        'english': 'I have read the book.',
-      },
-    ];
+    final word = wordList[0]; // Use the first word for now
+    print('Building WordScreen with word: ${word.word}'); // debug print
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Word of the Day'),
-        centerTitle: true,
+        title: Text('Wort des Tages'), // Word of the Day
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              word,
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              '${word.article} ${word.word}',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Translation: $translation',
-              style: const TextStyle(fontSize: 18),
+            SizedBox(height: 8),
+            Text('Translation: ${word.meaning}', style: TextStyle(fontSize: 18)),
+            SizedBox(height: 24),
+            Text('Example Sentences:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+            SizedBox(height: 12),
+            SentenceItem(
+              label: 'Present',
+              german: word.examples['Present'] ?? 'No example available',
+              english: word.translations['Present'] ?? 'No translation available',
             ),
-            const Divider(height: 32),
-            const Text(
-              'Example Sentences',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            SentenceItem(
+              label: 'Simple Past',
+              german: word.examples['Simple Past'] ?? 'No example available',
+              english: word.translations['Simple Past'] ?? 'No translation available',
             ),
-            const SizedBox(height: 12),
-            ...sentences.map((s) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${s['tense']} (German): ${s['german']}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      '→ ${s['english']}',
-                      style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-                    ),
-                    const SizedBox(height: 12),
-                  ],
-                )),
+            SentenceItem(
+              label: 'Perfect',
+              german: word.examples['Perfect'] ?? 'No example available',
+              english: word.translations['Perfect'] ?? 'No translation available',
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+
+// Reusable widget for example sentences
+class SentenceItem extends StatelessWidget {
+  final String label;
+  final String german;
+  final String english;
+
+  const SentenceItem({super.key, 
+    required this.label,
+    required this.german,
+    required this.english,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('$label (German): $german', style: TextStyle(fontSize: 16)),
+          Text('→ $english', style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+        ],
       ),
     );
   }
