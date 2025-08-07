@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'data/word_list.dart'; // Importing wordfile dart list
-import 'package:levelup/theme/app_text_styles.dart';
+import 'package:levelup/theme/app_text_styles.dart'; //Importing text_styles dart list
 
 void main() {
   runApp(LevelUpApp());
@@ -74,6 +74,17 @@ class _WordScreenState extends State<WordScreen> {
               german: word.examples['Perfect'] ?? 'N/A',
               english: word.translations['Perfect'] ?? 'N/A',
             ),
+            const SizedBox(height: 32),
+            Padding(
+              padding: const EdgeInsets.only(top: 24.0),
+              child: Center(
+                child: Text(
+                  'Word ${currentIndex + 1} of ${wordList.length}',
+                  style: AppTextStyles.subtitle,
+                ),
+              ),
+            ),
+
             const SizedBox(height: 32),
             Center(
               child: ElevatedButton(
