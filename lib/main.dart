@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'data/word_list.dart'; // Importing wordfile dart list 
+import 'data/word_list.dart'; // Importing wordfile dart list
+import 'package:levelup/theme/app_text_styles.dart';
 
 void main() {
   runApp(LevelUpApp());
@@ -13,9 +14,7 @@ class LevelUpApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LevelUp',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: WordScreen(),
       debugShowCheckedModeBanner: false,
     );
@@ -28,27 +27,36 @@ class WordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final word = wordList[0]; // Use the first word for now
-    print('Building WordScreen with word: ${word.word}'); // debug print
+    final word = wordList[0]; // Just showing first word for now
+
+    // Debug print (safe to leave during development)
+    // ignore: avoid_print
+    print('Building WordScreen with word: ${word.word}');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Wort des Tages'), // Word of the Day
+        title: const Text('Wort des Tages'),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               '${word.article} ${word.word}',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              style: AppTextStyles.title,
             ),
-            SizedBox(height: 8),
-            Text('Translation: ${word.meaning}', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 24),
-            Text('Example Sentences:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-            SizedBox(height: 12),
+            const SizedBox(height: 8),
+            Text(
+              'Translation: ${word.meaning}',
+              style: AppTextStyles.translation,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Example Sentences:',
+              style: AppTextStyles.subtitle,
+            ),
+            const SizedBox(height: 12),
             SentenceItem(
               label: 'Present',
               german: word.examples['Present'] ?? 'No example available',
@@ -71,14 +79,14 @@ class WordScreen extends StatelessWidget {
   }
 }
 
-
 // Reusable widget for example sentences
 class SentenceItem extends StatelessWidget {
   final String label;
   final String german;
   final String english;
 
-  const SentenceItem({super.key, 
+  const SentenceItem({
+    super.key,
     required this.label,
     required this.german,
     required this.english,
@@ -91,8 +99,14 @@ class SentenceItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('$label (German): $german', style: TextStyle(fontSize: 16)),
-          Text('→ $english', style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+          Text(
+            '$label (German): $german',
+            style: AppTextStyles.exampleGerman,
+          ),
+          Text(
+            '→ $english',
+            style: AppTextStyles.exampleEnglish,
+          ),
         ],
       ),
     );
