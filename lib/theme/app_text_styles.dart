@@ -27,4 +27,9 @@ class AppTextStyles {
     fontSize: 16,
     color: Colors.grey,
   );
+
+  static const pageCounter = TextStyle(
+    fontSize: 14,
+    color: Colors.grey,
+  );
 }
