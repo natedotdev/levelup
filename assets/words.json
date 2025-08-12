@@ -1,0 +1,47 @@
+[
+  {
+    "article": "das",
+    "word": "Buch",
+    "meaning": "book",
+    "examples": {
+      "Present": "Ich lese das Buch.",
+      "Simple Past": "Ich las das Buch.",
+      "Perfect": "Ich habe das Buch gelesen."
+    },
+    "translations": {
+      "Present": "I read the book.",
+      "Simple Past": "I read the book (past).",
+      "Perfect": "I have read the book."
+    }
+  },
+  {
+    "article": "der",
+    "word": "Hund",
+    "meaning": "dog",
+    "examples": {
+      "Present": "Der Hund bellt laut.",
+      "Simple Past": "Der Hund bellte laut.",
+      "Perfect": "Der Hund hat laut gebellt."
+    },
+    "translations": {
+      "Present": "The dog barks loudly.",
+      "Simple Past": "The dog barked loudly.",
+      "Perfect": "The dog has barked loudly."
+    }
+  },
+    {
+    "article": "die",
+    "word": "Katze",
+    "meaning": "cat",
+    "examples": {
+      "Present": "Die Katze schläft auf dem Sofa.",
+      "Simple Past": "Die Katze schlief auf dem Sofa.",
+      "Perfect": "Die Katze hat auf dem Sofa geschlafen."
+    },
+    "translations": {
+      "Present": "The cat sleeps on the sofa.",
+      "Simple Past": "The cat slept on the sofa.",
+      "Perfect": "The cat has slept on the sofa."
+    }
+  }
+]
