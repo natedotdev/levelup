@@ -78,16 +78,6 @@ class _WordScreenState extends State<WordScreen> {
     });
   }
 
-  /// Small visual hint in a Snackbar for swipe direction (optional)
-  void _showSwipeDirection(String direction) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Swiped $direction'),
-        duration: const Duration(milliseconds: 500),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     // Loading state
@@ -120,95 +110,84 @@ class _WordScreenState extends State<WordScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Wort des Tages')),
 
-      // Keep your swipe gestures exactly as before
+      // Fullscreen swipe detection
       body: GestureDetector(
+        behavior: HitTestBehavior.translucent, // ensures even empty space catches swipes
         onHorizontalDragEnd: (details) {
           if (details.primaryVelocity != null) {
             if (details.primaryVelocity! < 0) {
-              _showSwipeDirection("Right to Left");
+              // Swipe Right → Left
               _showNextWord();
             } else if (details.primaryVelocity! > 0) {
-              _showSwipeDirection("Left to Right");
+              // Swipe Left → Right
               _showPreviousWord();
             }
           }
         },
 
-        child: Stack(
+        // Main layout
+        child: Column(
           children: [
-            // Scrollable content (unchanged layout & styles)
-            SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Word + article
-                  Text(
-                    '${word.article} ${word.word}',
-                    style: AppTextStyles.title,
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  // Meaning/translation
-                  Text(
-                    'Translation: ${word.meaning}',
-                    style: AppTextStyles.translation,
-                  ),
-
-                  // Divider before example sentences
-                  const Divider(height: 40, thickness: 1.2),
-
-                  // Example sentences header
-                  Text('Example Sentences:', style: AppTextStyles.subtitle),
-                  const SizedBox(height: 12),
-
-                  // Dynamically render ALL examples found in JSON.
-                  // This replaces the fixed Present/Simple Past/Perfect widgets.
-                  ...word.examples.entries.map((entry) {
-                    final tense = entry.key;                    // e.g. "Present"
-                    final germanSentence = entry.value;         // the DE sentence
-                    final englishSentence =
-                        word.translations[tense] ?? 'N/A';      // matching EN
-                    return SentenceItem(
-                      label: tense,
-                      german: germanSentence,
-                      english: englishSentence,
-                    );
-                  }),
-
-                  const SizedBox(height: 80),
-
-                  // Page counter (kept same style key you used)
-                  Center(
-                    child: Text(
-                      'Word ${currentIndex + 1} of ${_words.length}',
-                      style: AppTextStyles.pageCounter,
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Word + article
+                    Text(
+                      '${word.article} ${word.word}',
+                      style: AppTextStyles.title,
                     ),
-                  ),
 
-                  // Spacer so the bottom FAB doesn’t overlap text
-                  const SizedBox(height: 120),
-                ],
+                    const SizedBox(height: 8),
+
+                    // Meaning/translation
+                    Text(
+                      'Translation: ${word.meaning}',
+                      style: AppTextStyles.translation,
+                    ),
+
+                    // Divider before example sentences
+                    const Divider(height: 40, thickness: 1.2),
+
+                    // Example sentences header
+                    Text('Example Sentences:', style: AppTextStyles.subtitle),
+                    const SizedBox(height: 12),
+
+                    // Dynamically render ALL examples found in JSON
+                    ...word.examples.entries.map((entry) {
+                      final tense = entry.key;                    // e.g. "Present"
+                      final germanSentence = entry.value;         // the DE sentence
+                      final englishSentence =
+                          word.translations[tense] ?? 'N/A';      // matching EN
+                      return SentenceItem(
+                        label: tense,
+                        german: germanSentence,
+                        english: englishSentence,
+                      );
+                    }),
+
+                    const SizedBox(height: 80),
+                    // Page counter
+                    Center(
+                      child: Text(
+                        'Word ${currentIndex + 1} of ${_words.length}',
+                        style: AppTextStyles.pageCounter,
+                      ),
+                    ),
+
+                    // Spacer so the bottom FAB doesn’t overlap text
+                    const SizedBox(height: 120),
+                  ],
+                ),
               ),
-            ),
-
-            // Swipe direction hint arrows (unchanged)
-            Positioned(
-              left: 8,
-              top: MediaQuery.of(context).size.height / 2 - 24,
-              child: const Icon(Icons.arrow_back_ios, color: Colors.black26),
-            ),
-            Positioned(
-              right: 8,
-              top: MediaQuery.of(context).size.height / 2 - 24,
-              child: const Icon(Icons.arrow_forward_ios, color: Colors.black26),
             ),
           ],
         ),
       ),
 
-      // Fixed bottom button (unchanged style/position)
+      // Fixed bottom button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -224,7 +203,7 @@ class _WordScreenState extends State<WordScreen> {
   }
 }
 
-// Reusable widget for example sentences (unchanged)
+// Reusable widget for example sentences
 class SentenceItem extends StatelessWidget {
   final String label;
   final String german;
