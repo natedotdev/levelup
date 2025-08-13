@@ -43,5 +43,156 @@
       "Simple Past": "The cat slept on the sofa.",
       "Perfect": "The cat has slept on the sofa."
     }
+  },
+
+  {
+    "article": "der",
+    "word": "Apfel",
+    "meaning": "apple",
+    "examples": {
+      "Present": "Ich esse einen Apfel.",
+      "Simple Past": "Ich aß einen Apfel.",
+      "Perfect": "Ich habe einen Apfel gegessen."
+    },
+    "translations": {
+      "Present": "I eat an apple.",
+      "Simple Past": "I ate an apple.",
+      "Perfect": "I have eaten an apple."
+    }
+  },
+  {
+    "article": "die",
+    "word": "Blume",
+    "meaning": "flower",
+    "examples": {
+      "Present": "Die Blume blüht im Garten.",
+      "Simple Past": "Die Blume blühte im Garten.",
+      "Perfect": "Die Blume hat im Garten geblüht."
+    },
+    "translations": {
+      "Present": "The flower blooms in the garden.",
+      "Simple Past": "The flower bloomed in the garden.",
+      "Perfect": "The flower has bloomed in the garden."
+    }
+  },
+  {
+    "article": "das",
+    "word": "Haus",
+    "meaning": "house",
+    "examples": {
+      "Present": "Das Haus steht am See.",
+      "Simple Past": "Das Haus stand am See.",
+      "Perfect": "Das Haus hat am See gestanden."
+    },
+    "translations": {
+      "Present": "The house stands by the lake.",
+      "Simple Past": "The house stood by the lake.",
+      "Perfect": "The house has stood by the lake."
+    }
+  },
+  {
+    "article": "der",
+    "word": "Stuhl",
+    "meaning": "chair",
+    "examples": {
+      "Present": "Der Stuhl ist bequem.",
+      "Simple Past": "Der Stuhl war bequem.",
+      "Perfect": "Der Stuhl ist bequem gewesen."
+    },
+    "translations": {
+      "Present": "The chair is comfortable.",
+      "Simple Past": "The chair was comfortable.",
+      "Perfect": "The chair has been comfortable."
+    }
+  },
+  {
+    "article": "die",
+    "word": "Straße",
+    "meaning": "street",
+    "examples": {
+      "Present": "Die Straße ist sehr lang.",
+      "Simple Past": "Die Straße war sehr lang.",
+      "Perfect": "Die Straße ist sehr lang gewesen."
+    },
+    "translations": {
+      "Present": "The street is very long.",
+      "Simple Past": "The street was very long.",
+      "Perfect": "The street has been very long."
+    }
+  },
+  {
+    "article": "das",
+    "word": "Auto",
+    "meaning": "car",
+    "examples": {
+      "Present": "Das Auto fährt schnell.",
+      "Simple Past": "Das Auto fuhr schnell.",
+      "Perfect": "Das Auto ist schnell gefahren."
+    },
+    "translations": {
+      "Present": "The car drives fast.",
+      "Simple Past": "The car drove fast.",
+      "Perfect": "The car has driven fast."
+    }
+  },
+  {
+    "article": "der",
+    "word": "Baum",
+    "meaning": "tree",
+    "examples": {
+      "Present": "Der Baum ist hoch.",
+      "Simple Past": "Der Baum war hoch.",
+      "Perfect": "Der Baum ist hoch gewesen."
+    },
+    "translations": {
+      "Present": "The tree is tall.",
+      "Simple Past": "The tree was tall.",
+      "Perfect": "The tree has been tall."
+    }
+  },
+  {
+    "article": "die",
+    "word": "Tasse",
+    "meaning": "cup",
+    "examples": {
+      "Present": "Die Tasse ist voll mit Kaffee.",
+      "Simple Past": "Die Tasse war voll mit Kaffee.",
+      "Perfect": "Die Tasse ist voll mit Kaffee gewesen."
+    },
+    "translations": {
+      "Present": "The cup is full of coffee.",
+      "Simple Past": "The cup was full of coffee.",
+      "Perfect": "The cup has been full of coffee."
+    }
+  },
+  {
+    "article": "das",
+    "word": "Fenster",
+    "meaning": "window",
+    "examples": {
+      "Present": "Das Fenster ist offen.",
+      "Simple Past": "Das Fenster war offen.",
+      "Perfect": "Das Fenster ist offen gewesen."
+    },
+    "translations": {
+      "Present": "The window is open.",
+      "Simple Past": "The window was open.",
+      "Perfect": "The window has been open."
+    }
+  },
+  {
+    "article": "der",
+    "word": "Tisch",
+    "meaning": "table",
+    "examples": {
+      "Present": "Der Tisch steht im Esszimmer.",
+      "Simple Past": "Der Tisch stand im Esszimmer.",
+      "Perfect": "Der Tisch hat im Esszimmer gestanden."
+    },
+    "translations": {
+      "Present": "The table stands in the dining room.",
+      "Simple Past": "The table stood in the dining room.",
+      "Perfect": "The table has stood in the dining room."
+    }
   }
 ]
