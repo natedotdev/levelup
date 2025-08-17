@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:levelup/theme/app_text_styles.dart';
 
-// NEW: use your JSON loader + model instead of word_list.dart
+// NEW: repo + models
 import 'data/word_repository.dart';
 import 'models/german_word.dart';
+
+// NEW: separate onboarding screen
+import 'screens/onboarding_screen.dart';
 
 void main() {
   runApp(const LevelUpApp());
 }
 
-// Main app widget
+// Main App entry
 class LevelUpApp extends StatelessWidget {
   const LevelUpApp({super.key});
 
@@ -18,58 +22,104 @@ class LevelUpApp extends StatelessWidget {
     return MaterialApp(
       title: 'LevelUp',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const WordScreen(),
+      home: const RootScreen(), // decide onboarding or word screen
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-// Word display screen
+// -----------------------------------------------------------
+// RootScreen → checks SharedPreferences
+// If no level → show Onboarding
+// If level exists → show WordScreen
+// -----------------------------------------------------------
+class RootScreen extends StatefulWidget {
+  const RootScreen({super.key});
+
+  @override
+  State<RootScreen> createState() => _RootScreenState();
+}
+
+class _RootScreenState extends State<RootScreen> {
+  String? _level;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLevel();
+  }
+
+  Future<void> _loadLevel() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _level = prefs.getString('level');
+      _loading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Loading state (first app start)
+    if (_loading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // If no level chosen → go to onboarding
+    if (_level == null) {
+      return OnboardingScreen(onLevelSelected: (level) async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('level', level);
+        setState(() => _level = level);
+      });
+    }
+
+    // If level already chosen → go to words
+    return WordScreen(level: _level!);
+  }
+}
+
+// WordScreen → shows words filtered by chosen level
 class WordScreen extends StatefulWidget {
-  const WordScreen({super.key});
+  final String level;
+  const WordScreen({super.key, required this.level});
 
   @override
   State<WordScreen> createState() => _WordScreenState();
 }
 
 class _WordScreenState extends State<WordScreen> {
-  // STATE THAT REPLACED wordList FROM word_list.dart
-  List<GermanWord> _words = [];   // all words loaded from JSON
-  int currentIndex = 0;           // which word we’re showing right now
-  bool _loading = true;           // show spinner until JSON is loaded
-  String? _error;                 // capture load errors
+  List<GermanWord> _words = [];
+  int currentIndex = 0;
+  bool _loading = true;
+  String? _error;
 
-// Which language level is active (default A1.1 for now)
-String selectedLevel = 'A1.1';
-
-// Available levels for quick switching (optional)
-static const List<String> _levels = [
-  'A1.1','A1.2','A2.1','A2.2','B1.1','B1.2','B2.1','B2.2','C1.1','C1.2','C2.1','C2.2'
-];
   @override
   void initState() {
     super.initState();
-    _loadWords(); // kick off JSON loading as soon as the screen mounts
+    _loadWords();
   }
 
-  /// Load words from assets/words.json via WordRepository
-Future<void> _loadWords() async {
-  try {
-    final loaded = await WordRepository.loadWords(level: selectedLevel);
-    setState(() {
-      _words = loaded;
-      currentIndex = 0;
-      _loading = false;
-    });
-  } catch (e) {
-    setState(() {
-      _loading = false;
-      _error = e.toString();
-    });
+  /// Load JSON + filter by level
+  Future<void> _loadWords() async {
+    try {
+      final loaded = await WordRepository.loadWords(level: widget.level);
+      setState(() {
+        _words = loaded;
+        currentIndex = 0;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _loading = false;
+        _error = e.toString();
+      });
+    }
   }
-}
 
-  /// Advance to next word (wrap around at the end)
+  /// Next word
   void _showNextWord() {
     if (_words.isEmpty) return;
     setState(() {
@@ -77,7 +127,7 @@ Future<void> _loadWords() async {
     });
   }
 
-  /// Go to previous word (wrap to last when at index 0)
+  /// Previous word
   void _showPreviousWord() {
     if (_words.isEmpty) return;
     setState(() {
@@ -103,119 +153,81 @@ Future<void> _loadWords() async {
       );
     }
 
-    // Empty data state (JSON loaded but no items)
+    // Empty state
     if (_words.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: const Text('Wort des Tages')),
-        body: const Center(child: Text('No words found in assets/words.json')),
+        body: const Center(child: Text('No words found for this level')),
       );
     }
 
-    // Normal display state
+    // Normal state
     final word = _words[currentIndex];
 
     return Scaffold(
-      appBar: AppBar(
-  title: const Text('Wort des Tages'),
-  actions: [
-    PopupMenuButton<String>(
-      icon: const Icon(Icons.school),
-      initialValue: selectedLevel,
-      onSelected: (lvl) async {
-        setState(() {
-          selectedLevel = lvl;
-          _loading = true;
-        });
-        await _loadWords();
-      },
-      itemBuilder: (_) => _levels
-          .map((lvl) => PopupMenuItem<String>(
-                value: lvl,
-                child: Text(lvl),
-              ))
-          .toList(),
-    ),
-  ],
-),
+      appBar: AppBar(title: Text('Wort des Tages – ${widget.level}')),
 
-      // Fullscreen swipe detection
+      // Wrap entire screen with GestureDetector → full screen swipe works
       body: GestureDetector(
-        behavior: HitTestBehavior.translucent, // ensures even empty space catches swipes
+        behavior: HitTestBehavior.opaque,
         onHorizontalDragEnd: (details) {
           if (details.primaryVelocity != null) {
             if (details.primaryVelocity! < 0) {
-              // Swipe Right → Left
               _showNextWord();
             } else if (details.primaryVelocity! > 0) {
-              // Swipe Left → Right
               _showPreviousWord();
             }
           }
         },
 
-        // Main layout
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Word + article
-                    Text(
-                      '${word.article} ${word.word}',
-                      style: AppTextStyles.title,
-                    ),
+        // Scrollable content
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Word
+              Text('${word.article} ${word.word}', style: AppTextStyles.title),
 
-                    const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-                    // Meaning/translation
-                    Text(
-                      'Translation: ${word.meaning}',
-                      style: AppTextStyles.translation,
-                    ),
+              // Translation
+              Text('Translation: ${word.meaning}', style: AppTextStyles.translation),
 
-                    // Divider before example sentences
-                    const Divider(height: 40, thickness: 1.2),
+              const Divider(height: 40, thickness: 1.2),
 
-                    // Example sentences header
-                    Text('Example Sentences:', style: AppTextStyles.subtitle),
-                    const SizedBox(height: 12),
+              // Examples
+              Text('Example Sentences:', style: AppTextStyles.subtitle),
+              const SizedBox(height: 12),
 
-                    // Dynamically render ALL examples found in JSON
-                    ...word.examples.entries.map((entry) {
-                      final tense = entry.key;                    // e.g. "Present"
-                      final germanSentence = entry.value;         // the DE sentence
-                      final englishSentence =
-                          word.translations[tense] ?? 'N/A';      // matching EN
-                      return SentenceItem(
-                        label: tense,
-                        german: germanSentence,
-                        english: englishSentence,
-                      );
-                    }),
+              ...word.examples.entries.map((entry) {
+                final tense = entry.key;
+                final germanSentence = entry.value;
+                final englishSentence = word.translations[tense] ?? 'N/A';
+                return SentenceItem(
+                  label: tense,
+                  german: germanSentence,
+                  english: englishSentence,
+                );
+              }),
 
-                    const SizedBox(height: 80),
-                    // Page counter
-                    Center(
-                      child: Text(
-                        'Word ${currentIndex + 1} of ${_words.length}',
-                        style: AppTextStyles.pageCounter,
-                      ),
-                    ),
+              const SizedBox(height: 80),
 
-                    // Spacer so the bottom FAB doesn’t overlap text
-                    const SizedBox(height: 120),
-                  ],
+              // Page counter
+              Center(
+                child: Text(
+                  'Word ${currentIndex + 1} of ${_words.length}',
+                  style: AppTextStyles.pageCounter,
                 ),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 120),
+            ],
+          ),
         ),
       ),
 
-      // Fixed bottom button
+      // Bottom button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -231,7 +243,7 @@ Future<void> _loadWords() async {
   }
 }
 
-// Reusable widget for example sentences
+// Reusable Example Sentence widget
 class SentenceItem extends StatelessWidget {
   final String label;
   final String german;
