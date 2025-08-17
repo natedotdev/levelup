@@ -39,6 +39,13 @@ class _WordScreenState extends State<WordScreen> {
   bool _loading = true;           // show spinner until JSON is loaded
   String? _error;                 // capture load errors
 
+// Which language level is active (default A1.1 for now)
+String selectedLevel = 'A1.1';
+
+// Available levels for quick switching (optional)
+static const List<String> _levels = [
+  'A1.1','A1.2','A2.1','A2.2','B1.1','B1.2','B2.1','B2.2','C1.1','C1.2','C2.1','C2.2'
+];
   @override
   void initState() {
     super.initState();
@@ -46,21 +53,21 @@ class _WordScreenState extends State<WordScreen> {
   }
 
   /// Load words from assets/words.json via WordRepository
-  Future<void> _loadWords() async {
-    try {
-      final loaded = await WordRepository.loadWords();
-      setState(() {
-        _words = loaded;
-        currentIndex = 0;
-        _loading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _loading = false;
-        _error = e.toString();
-      });
-    }
+Future<void> _loadWords() async {
+  try {
+    final loaded = await WordRepository.loadWords(level: selectedLevel);
+    setState(() {
+      _words = loaded;
+      currentIndex = 0;
+      _loading = false;
+    });
+  } catch (e) {
+    setState(() {
+      _loading = false;
+      _error = e.toString();
+    });
   }
+}
 
   /// Advance to next word (wrap around at the end)
   void _showNextWord() {
@@ -108,7 +115,28 @@ class _WordScreenState extends State<WordScreen> {
     final word = _words[currentIndex];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Wort des Tages')),
+      appBar: AppBar(
+  title: const Text('Wort des Tages'),
+  actions: [
+    PopupMenuButton<String>(
+      icon: const Icon(Icons.school),
+      initialValue: selectedLevel,
+      onSelected: (lvl) async {
+        setState(() {
+          selectedLevel = lvl;
+          _loading = true;
+        });
+        await _loadWords();
+      },
+      itemBuilder: (_) => _levels
+          .map((lvl) => PopupMenuItem<String>(
+                value: lvl,
+                child: Text(lvl),
+              ))
+          .toList(),
+    ),
+  ],
+),
 
       // Fullscreen swipe detection
       body: GestureDetector(

@@ -1,5 +1,6 @@
 [
   {
+    "level": "A1.1",
     "article": "das",
     "word": "Buch",
     "meaning": "book",
@@ -15,6 +16,7 @@
     }
   },
   {
+    "level": "A1.2",
     "article": "der",
     "word": "Hund",
     "meaning": "dog",
@@ -29,7 +31,8 @@
       "Perfect": "The dog has barked loudly."
     }
   },
-    {
+  {
+    "level": "A2.1",
     "article": "die",
     "word": "Katze",
     "meaning": "cat",
@@ -44,38 +47,8 @@
       "Perfect": "The cat has slept on the sofa."
     }
   },
-
   {
-    "article": "der",
-    "word": "Apfel",
-    "meaning": "apple",
-    "examples": {
-      "Present": "Ich esse einen Apfel.",
-      "Simple Past": "Ich aß einen Apfel.",
-      "Perfect": "Ich habe einen Apfel gegessen."
-    },
-    "translations": {
-      "Present": "I eat an apple.",
-      "Simple Past": "I ate an apple.",
-      "Perfect": "I have eaten an apple."
-    }
-  },
-  {
-    "article": "die",
-    "word": "Blume",
-    "meaning": "flower",
-    "examples": {
-      "Present": "Die Blume blüht im Garten.",
-      "Simple Past": "Die Blume blühte im Garten.",
-      "Perfect": "Die Blume hat im Garten geblüht."
-    },
-    "translations": {
-      "Present": "The flower blooms in the garden.",
-      "Simple Past": "The flower bloomed in the garden.",
-      "Perfect": "The flower has bloomed in the garden."
-    }
-  },
-  {
+    "level": "A2.2",
     "article": "das",
     "word": "Haus",
     "meaning": "house",
@@ -91,108 +64,131 @@
     }
   },
   {
+    "level": "B1.1",
     "article": "der",
-    "word": "Stuhl",
-    "meaning": "chair",
+    "word": "Apfel",
+    "meaning": "apple",
     "examples": {
-      "Present": "Der Stuhl ist bequem.",
-      "Simple Past": "Der Stuhl war bequem.",
-      "Perfect": "Der Stuhl ist bequem gewesen."
+      "Present": "Ich esse einen Apfel.",
+      "Simple Past": "Ich aß einen Apfel.",
+      "Perfect": "Ich habe einen Apfel gegessen."
     },
     "translations": {
-      "Present": "The chair is comfortable.",
-      "Simple Past": "The chair was comfortable.",
-      "Perfect": "The chair has been comfortable."
+      "Present": "I eat an apple.",
+      "Simple Past": "I ate an apple.",
+      "Perfect": "I have eaten an apple."
     }
   },
   {
+    "level": "B1.2",
     "article": "die",
-    "word": "Straße",
-    "meaning": "street",
+    "word": "Erfahrung",
+    "meaning": "experience",
     "examples": {
-      "Present": "Die Straße ist sehr lang.",
-      "Simple Past": "Die Straße war sehr lang.",
-      "Perfect": "Die Straße ist sehr lang gewesen."
+      "Present": "Ich sammle Erfahrung.",
+      "Simple Past": "Ich sammelte Erfahrung.",
+      "Perfect": "Ich habe Erfahrung gesammelt."
     },
     "translations": {
-      "Present": "The street is very long.",
-      "Simple Past": "The street was very long.",
-      "Perfect": "The street has been very long."
+      "Present": "I gain experience.",
+      "Simple Past": "I gained experience.",
+      "Perfect": "I have gained experience."
     }
   },
   {
+    "level": "B2.1",
     "article": "das",
-    "word": "Auto",
-    "meaning": "car",
+    "word": "Thema",
+    "meaning": "topic",
     "examples": {
-      "Present": "Das Auto fährt schnell.",
-      "Simple Past": "Das Auto fuhr schnell.",
-      "Perfect": "Das Auto ist schnell gefahren."
+      "Present": "Wir diskutieren das Thema.",
+      "Simple Past": "Wir diskutierten das Thema.",
+      "Perfect": "Wir haben das Thema diskutiert."
     },
     "translations": {
-      "Present": "The car drives fast.",
-      "Simple Past": "The car drove fast.",
-      "Perfect": "The car has driven fast."
+      "Present": "We discuss the topic.",
+      "Simple Past": "We discussed the topic.",
+      "Perfect": "We have discussed the topic."
     }
   },
   {
+    "level": "B2.2",
     "article": "der",
-    "word": "Baum",
-    "meaning": "tree",
+    "word": "Vorteil",
+    "meaning": "advantage",
     "examples": {
-      "Present": "Der Baum ist hoch.",
-      "Simple Past": "Der Baum war hoch.",
-      "Perfect": "Der Baum ist hoch gewesen."
+      "Present": "Der Vorteil ist klar.",
+      "Simple Past": "Der Vorteil war klar.",
+      "Perfect": "Der Vorteil ist klar gewesen."
     },
     "translations": {
-      "Present": "The tree is tall.",
-      "Simple Past": "The tree was tall.",
-      "Perfect": "The tree has been tall."
+      "Present": "The advantage is clear.",
+      "Simple Past": "The advantage was clear.",
+      "Perfect": "The advantage has been clear."
     }
   },
   {
+    "level": "C1.1",
     "article": "die",
-    "word": "Tasse",
-    "meaning": "cup",
+    "word": "Entscheidung",
+    "meaning": "decision",
     "examples": {
-      "Present": "Die Tasse ist voll mit Kaffee.",
-      "Simple Past": "Die Tasse war voll mit Kaffee.",
-      "Perfect": "Die Tasse ist voll mit Kaffee gewesen."
+      "Present": "Die Entscheidung fällt schwer.",
+      "Simple Past": "Die Entscheidung fiel schwer.",
+      "Perfect": "Die Entscheidung ist schwer gefallen."
     },
     "translations": {
-      "Present": "The cup is full of coffee.",
-      "Simple Past": "The cup was full of coffee.",
-      "Perfect": "The cup has been full of coffee."
+      "Present": "The decision is difficult.",
+      "Simple Past": "The decision was difficult.",
+      "Perfect": "The decision has been difficult."
     }
   },
   {
+    "level": "C1.2",
     "article": "das",
-    "word": "Fenster",
-    "meaning": "window",
+    "word": "Ergebnis",
+    "meaning": "result",
     "examples": {
-      "Present": "Das Fenster ist offen.",
-      "Simple Past": "Das Fenster war offen.",
-      "Perfect": "Das Fenster ist offen gewesen."
+      "Present": "Das Ergebnis überzeugt.",
+      "Simple Past": "Das Ergebnis überzeugte.",
+      "Perfect": "Das Ergebnis hat überzeugt."
     },
     "translations": {
-      "Present": "The window is open.",
-      "Simple Past": "The window was open.",
-      "Perfect": "The window has been open."
+      "Present": "The result convinces.",
+      "Simple Past": "The result convinced.",
+      "Perfect": "The result has convinced."
     }
   },
   {
+    "level": "C2.1",
     "article": "der",
-    "word": "Tisch",
-    "meaning": "table",
+    "word": "Widerspruch",
+    "meaning": "contradiction",
     "examples": {
-      "Present": "Der Tisch steht im Esszimmer.",
-      "Simple Past": "Der Tisch stand im Esszimmer.",
-      "Perfect": "Der Tisch hat im Esszimmer gestanden."
+      "Present": "Seine Aussage steht im Widerspruch.",
+      "Simple Past": "Seine Aussage stand im Widerspruch.",
+      "Perfect": "Seine Aussage hat im Widerspruch gestanden."
     },
     "translations": {
-      "Present": "The table stands in the dining room.",
-      "Simple Past": "The table stood in the dining room.",
-      "Perfect": "The table has stood in the dining room."
+      "Present": "His statement is in contradiction.",
+      "Simple Past": "His statement was in contradiction.",
+      "Perfect": "His statement has been in contradiction."
+    }
+  },
+  {
+    "level": "C2.2",
+    "article": "die",
+    "word": "Voraussetzung",
+    "meaning": "prerequisite",
+    "examples": {
+      "Present": "Die Voraussetzung ist erfüllt.",
+      "Simple Past": "Die Voraussetzung war erfüllt.",
+      "Perfect": "Die Voraussetzung ist erfüllt gewesen."
+    },
+    "translations": {
+      "Present": "The prerequisite is met.",
+      "Simple Past": "The prerequisite was met.",
+      "Perfect": "The prerequisite has been met."
     }
   }
 ]
