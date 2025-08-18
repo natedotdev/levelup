@@ -69,19 +69,19 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     // Loading state (first app start)
     if (_loading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     // If no level chosen → go to onboarding
     if (_level == null) {
-      return OnboardingScreen(onLevelSelected: (level) async {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('level', level);
-        if (!mounted) return;
-        setState(() => _level = level);
-      });
+      return OnboardingScreen(
+        onLevelSelected: (level) async {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('level', level);
+          if (!mounted) return;
+          setState(() => _level = level);
+        },
+      );
     }
 
     // If level already chosen → go to words
@@ -93,6 +93,7 @@ class _RootScreenState extends State<RootScreen> {
 // WordScreen → shows words filtered by chosen level
 // - Unified AppBar (same in all states) with a Settings button
 // - Swipe left/right to switch words
+// - Swipe up/down to switch example groups
 // - "Next Word" button fixed at the bottom
 // -----------------------------------------------------------
 class WordScreen extends StatefulWidget {
@@ -106,6 +107,7 @@ class WordScreen extends StatefulWidget {
 class _WordScreenState extends State<WordScreen> {
   List<GermanWord> _words = [];
   int currentIndex = 0;
+  int _exampleGroupIndex = 0; // NEW: which example group within the word
   bool _loading = true;
   String? _error;
 
@@ -122,7 +124,8 @@ class _WordScreenState extends State<WordScreen> {
       if (!mounted) return;
       setState(() {
         _words = loaded;
-        currentIndex = 0;   // always start at first item for a level
+        currentIndex = 0; // always start at first item for a level
+        _exampleGroupIndex = 0; // and first example group
         _loading = false;
       });
     } catch (e) {
@@ -139,6 +142,7 @@ class _WordScreenState extends State<WordScreen> {
     if (_words.isEmpty) return;
     setState(() {
       currentIndex = (currentIndex + 1) % _words.length;
+      _exampleGroupIndex = 0; // reset examples when word changes
     });
   }
 
@@ -147,8 +151,31 @@ class _WordScreenState extends State<WordScreen> {
     if (_words.isEmpty) return;
     setState(() {
       currentIndex = (currentIndex - 1 + _words.length) % _words.length;
+      _exampleGroupIndex = 0; // reset examples when word changes
     });
   }
+
+  /// Next example group for current word (wrap around)
+  void _showNextExampleGroup() {
+    final groups = _currentWord?.examplesGroups ?? const [];
+    if (groups.isEmpty) return;
+    setState(() {
+      _exampleGroupIndex = (_exampleGroupIndex + 1) % groups.length;
+    });
+  }
+
+  /// Previous example group for current word (wrap around)
+  void _showPreviousExampleGroup() {
+    final groups = _currentWord?.examplesGroups ?? const [];
+    if (groups.isEmpty) return;
+    setState(() {
+      _exampleGroupIndex =
+          (_exampleGroupIndex - 1 + groups.length) % groups.length;
+    });
+  }
+
+  GermanWord? get _currentWord =>
+      (_words.isEmpty) ? null : _words[currentIndex];
 
   /// One place to define the AppBar so it is consistent across states
   AppBar _buildAppBar() {
@@ -223,19 +250,37 @@ class _WordScreenState extends State<WordScreen> {
     }
 
     // Normal state
-    final word = _words[currentIndex];
+    final word = _currentWord!;
+    final groups = word.examplesGroups;
+    final groupCount = groups.length;
+    final currentGroup = (groupCount == 0)
+        ? const <ExampleItem>[]
+        : groups[_exampleGroupIndex];
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque, // full-screen swipe area
+      // Horizontal: switch word
       onHorizontalDragEnd: (details) {
         if (details.primaryVelocity != null) {
           if (details.primaryVelocity! < 0) {
-            _showNextWord();      // right-to-left
+            _showNextWord(); // right-to-left
           } else if (details.primaryVelocity! > 0) {
-            _showPreviousWord();  // left-to-right
+            _showPreviousWord(); // left-to-right
           }
         }
       },
+
+      // Vertical: switch example group
+      onVerticalDragEnd: (details) {
+        if (details.primaryVelocity != null) {
+          if (details.primaryVelocity! < 0) {
+            _showNextExampleGroup(); // swipe up → next example group
+          } else if (details.primaryVelocity! > 0) {
+            _showPreviousExampleGroup(); // swipe down → previous example group
+          }
+        }
+      },
+
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -247,27 +292,66 @@ class _WordScreenState extends State<WordScreen> {
             const SizedBox(height: 8),
 
             // Meaning/translation
-            Text('Translation: ${word.meaning}', style: AppTextStyles.translation),
+            Text(
+              'Translation: ${word.meaning}',
+              style: AppTextStyles.translation,
+            ),
 
             // Divider before example sentences
             const Divider(height: 40, thickness: 1.2),
 
             // Example sentences header
-            Text('Example Sentences:', style: AppTextStyles.subtitle),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Example Sentences:', style: AppTextStyles.subtitle),
+                // Example counter: "Example X of N"
+                if (groupCount > 0)
+                  Text(
+                    'Example ${_exampleGroupIndex + 1} of $groupCount',
+                    style: AppTextStyles.subtitle,
+                  ),
+              ],
+            ),
             const SizedBox(height: 12),
 
-            // Render all available tenses from JSON
-            ...word.examples.entries.map((entry) {
-              final tense = entry.key;                // e.g., "Present"
-              final germanSentence = entry.value;     // current schema: String
-              final englishSentence =
-                  word.translations[tense] ?? 'N/A';  // match EN by tense
-              return SentenceItem(
-                label: tense,
-                german: germanSentence,
-                english: englishSentence,
-              );
-            }),
+            // Small hint to teach the vertical swipe for examples
+            Text(
+              'Tip: swipe up/down for next example group',
+              style: AppTextStyles.exampleEnglish.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Render the CURRENT example group (3 tenses)
+            ...currentGroup.map(
+              (item) => SentenceItem(
+                label: item.label,
+                german: item.german,
+                english: item.english,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // NEW: "Next Example" button (only if there is >1 group)
+            if (groupCount > 1)
+              Center(
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.arrow_downward),
+                  onPressed: _showNextExampleGroup,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  label: Text('Next Example', style: AppTextStyles.pageCounter),
+                ),
+              ),
 
             const SizedBox(height: 80),
 

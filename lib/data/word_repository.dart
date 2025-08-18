@@ -5,29 +5,54 @@ import '../models/german_word.dart';
 /// WordRepository is responsible for loading and preparing words
 /// from the local JSON file (`assets/words.json`).
 ///
-/// It hides the details of reading the asset and parsing JSON,
-/// so the rest of the app can just call `WordRepository.loadWords()`
-/// and get a list of `GermanWord` objects.
+/// JSON SHAPE (NEW):
+/// {
+///   "A1.1": [ {word}, {word}, ... ],
+///   "A1.2": [ {word}, ... ],
+///   ...
+/// }
+///
+/// - If [level] is provided, we only parse that level's list.
+/// - If [level] is null, we flatten ALL levels into one List\<GermanWord>.
 class WordRepository {
   /// Load words from assets/words.json
   ///
-  /// - If [level] is not provided (null), it will return *all words*.
+  /// - If [level] is not provided (null), it will return *all words* across all levels.
   /// - If [level] is provided (e.g., "A1.1"), it will return *only words*
   ///   that match that level.
   static Future<List<GermanWord>> loadWords({String? level}) async {
     // Load the raw string from assets/words.json
     final String jsonString = await rootBundle.loadString('assets/words.json');
 
-    // Decode the raw string into a List of Maps (dynamic JSON objects)
-    final List<dynamic> jsonData = json.decode(jsonString);
+    // Decode into a Map<String, dynamic> (levels → list of words)
+    final Map<String, dynamic> root = json.decode(jsonString);
 
-    // Convert each map into a GermanWord object
-    final all = jsonData.map((item) => GermanWord.fromJson(item)).toList();
+    // Helper that converts a raw word map into GermanWord with the provided level key
+    List<GermanWord> parseWordsForLevel(String lvl) {
+      final list = root[lvl];
+      if (list is List) {
+        return list
+            .map<GermanWord>((w) => GermanWord.fromJsonWithLevel(
+                  Map<String, dynamic>.from(w as Map),
+                  lvl,
+                ))
+            .toList();
+      }
+      return <GermanWord>[];
+    }
 
-    // If no level filter is provided → return all words
-    if (level == null) return all;
+    if (level != null) {
+      // Only parse the requested level
+      return parseWordsForLevel(level);
+    }
 
-    // Otherwise, filter the words by the given level
-    return all.where((w) => w.level == level).toList();
+    // No level filter → flatten ALL levels
+    final List<GermanWord> all = [];
+    for (final entry in root.entries) {
+      final lvl = entry.key;
+      final parsed = parseWordsForLevel(lvl);
+      all.addAll(parsed);
+    }
+    return all;
   }
 }
