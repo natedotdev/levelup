@@ -9,11 +9,16 @@ import 'models/german_word.dart';
 // NEW: separate onboarding screen
 import 'screens/onboarding_screen.dart';
 
+// Settings screen
+import 'screens/settings_screen.dart';
+
 void main() {
   runApp(const LevelUpApp());
 }
 
+// -----------------------------------------------------------
 // Main App entry
+// -----------------------------------------------------------
 class LevelUpApp extends StatelessWidget {
   const LevelUpApp({super.key});
 
@@ -50,8 +55,10 @@ class _RootScreenState extends State<RootScreen> {
     _loadLevel();
   }
 
+  // Read the saved level once at startup
   Future<void> _loadLevel() async {
     final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return; // guard before setState after an await
     setState(() {
       _level = prefs.getString('level');
       _loading = false;
@@ -62,18 +69,19 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     // Loading state (first app start)
     if (_loading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     // If no level chosen → go to onboarding
     if (_level == null) {
-      return OnboardingScreen(onLevelSelected: (level) async {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('level', level);
-        setState(() => _level = level);
-      });
+      return OnboardingScreen(
+        onLevelSelected: (level) async {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('level', level);
+          if (!mounted) return;
+          setState(() => _level = level);
+        },
+      );
     }
 
     // If level already chosen → go to words
@@ -81,7 +89,13 @@ class _RootScreenState extends State<RootScreen> {
   }
 }
 
+// -----------------------------------------------------------
 // WordScreen → shows words filtered by chosen level
+// - Unified AppBar (same in all states) with a Settings button
+// - Swipe left/right to switch words
+// - Swipe up/down to switch example groups
+// - "Next Word" button fixed at the bottom
+// -----------------------------------------------------------
 class WordScreen extends StatefulWidget {
   final String level;
   const WordScreen({super.key, required this.level});
@@ -93,6 +107,7 @@ class WordScreen extends StatefulWidget {
 class _WordScreenState extends State<WordScreen> {
   List<GermanWord> _words = [];
   int currentIndex = 0;
+  int _exampleGroupIndex = 0; // NEW: which example group within the word
   bool _loading = true;
   String? _error;
 
@@ -102,16 +117,19 @@ class _WordScreenState extends State<WordScreen> {
     _loadWords();
   }
 
-  /// Load JSON + filter by level
+  /// Load JSON + filter by level once per screen instance
   Future<void> _loadWords() async {
     try {
       final loaded = await WordRepository.loadWords(level: widget.level);
+      if (!mounted) return;
       setState(() {
         _words = loaded;
-        currentIndex = 0;
+        currentIndex = 0; // always start at first item for a level
+        _exampleGroupIndex = 0; // and first example group
         _loading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _loading = false;
         _error = e.toString();
@@ -119,115 +137,87 @@ class _WordScreenState extends State<WordScreen> {
     }
   }
 
-  /// Next word
+  /// Next word (wrap around)
   void _showNextWord() {
     if (_words.isEmpty) return;
     setState(() {
       currentIndex = (currentIndex + 1) % _words.length;
+      _exampleGroupIndex = 0; // reset examples when word changes
     });
   }
 
-  /// Previous word
+  /// Previous word (wrap around)
   void _showPreviousWord() {
     if (_words.isEmpty) return;
     setState(() {
       currentIndex = (currentIndex - 1 + _words.length) % _words.length;
+      _exampleGroupIndex = 0; // reset examples when word changes
     });
+  }
+
+  /// Next example group for current word (wrap around)
+  void _showNextExampleGroup() {
+    final groups = _currentWord?.examplesGroups ?? const [];
+    if (groups.isEmpty) return;
+    setState(() {
+      _exampleGroupIndex = (_exampleGroupIndex + 1) % groups.length;
+    });
+  }
+
+  /// Previous example group for current word (wrap around)
+  void _showPreviousExampleGroup() {
+    final groups = _currentWord?.examplesGroups ?? const [];
+    if (groups.isEmpty) return;
+    setState(() {
+      _exampleGroupIndex =
+          (_exampleGroupIndex - 1 + groups.length) % groups.length;
+    });
+  }
+
+  GermanWord? get _currentWord =>
+      (_words.isEmpty) ? null : _words[currentIndex];
+
+  /// One place to define the AppBar so it is consistent across states
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: Text('Wort des Tages – ${widget.level}'),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.settings),
+          tooltip: 'Settings',
+          onPressed: () async {
+            // 1) Navigate to Settings (await result)
+            final newLevel = await Navigator.push<String>(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            );
+
+            // 2) After an await, always check mounted before using context/state
+            if (!mounted) return;
+
+            // 3) Persist & rebuild if level changed
+            if (newLevel != null && newLevel != widget.level) {
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString('level', newLevel);
+
+              if (!mounted) return; // extra safety before navigation
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => WordScreen(level: newLevel)),
+              );
+            }
+          },
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Loading state
-    if (_loading) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Wort des Tages')),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    // Error state
-    if (_error != null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Wort des Tages')),
-        body: Center(child: Text('Error loading words:\n$_error')),
-      );
-    }
-
-    // Empty state
-    if (_words.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Wort des Tages')),
-        body: const Center(child: Text('No words found for this level')),
-      );
-    }
-
-    // Normal state
-    final word = _words[currentIndex];
-
+    // Build one Scaffold with the **same AppBar** everywhere
     return Scaffold(
-      appBar: AppBar(title: Text('Wort des Tages – ${widget.level}')),
-
-      // Wrap entire screen with GestureDetector → full screen swipe works
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onHorizontalDragEnd: (details) {
-          if (details.primaryVelocity != null) {
-            if (details.primaryVelocity! < 0) {
-              _showNextWord();
-            } else if (details.primaryVelocity! > 0) {
-              _showPreviousWord();
-            }
-          }
-        },
-
-        // Scrollable content
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Word
-              Text('${word.article} ${word.word}', style: AppTextStyles.title),
-
-              const SizedBox(height: 8),
-
-              // Translation
-              Text('Translation: ${word.meaning}', style: AppTextStyles.translation),
-
-              const Divider(height: 40, thickness: 1.2),
-
-              // Examples
-              Text('Example Sentences:', style: AppTextStyles.subtitle),
-              const SizedBox(height: 12),
-
-              ...word.examples.entries.map((entry) {
-                final tense = entry.key;
-                final germanSentence = entry.value;
-                final englishSentence = word.translations[tense] ?? 'N/A';
-                return SentenceItem(
-                  label: tense,
-                  german: germanSentence,
-                  english: englishSentence,
-                );
-              }),
-
-              const SizedBox(height: 80),
-
-              // Page counter
-              Center(
-                child: Text(
-                  'Word ${currentIndex + 1} of ${_words.length}',
-                  style: AppTextStyles.pageCounter,
-                ),
-              ),
-
-              const SizedBox(height: 120),
-            ],
-          ),
-        ),
-      ),
-
-      // Bottom button
+      appBar: _buildAppBar(),
+      body: _buildBody(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -241,9 +231,149 @@ class _WordScreenState extends State<WordScreen> {
       ),
     );
   }
+
+  /// Body content split out for readability; we use the same AppBar for all cases
+  Widget _buildBody(BuildContext context) {
+    // Loading state
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // Error state
+    if (_error != null) {
+      return Center(child: Text('Error loading words:\n$_error'));
+    }
+
+    // Empty state
+    if (_words.isEmpty) {
+      return const Center(child: Text('No words found for this level'));
+    }
+
+    // Normal state
+    final word = _currentWord!;
+    final groups = word.examplesGroups;
+    final groupCount = groups.length;
+    final currentGroup = (groupCount == 0)
+        ? const <ExampleItem>[]
+        : groups[_exampleGroupIndex];
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque, // full-screen swipe area
+      // Horizontal: switch word
+      onHorizontalDragEnd: (details) {
+        if (details.primaryVelocity != null) {
+          if (details.primaryVelocity! < 0) {
+            _showNextWord(); // right-to-left
+          } else if (details.primaryVelocity! > 0) {
+            _showPreviousWord(); // left-to-right
+          }
+        }
+      },
+
+      // Vertical: switch example group
+      onVerticalDragEnd: (details) {
+        if (details.primaryVelocity != null) {
+          if (details.primaryVelocity! < 0) {
+            _showNextExampleGroup(); // swipe up → next example group
+          } else if (details.primaryVelocity! > 0) {
+            _showPreviousExampleGroup(); // swipe down → previous example group
+          }
+        }
+      },
+
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Word + article
+            Text('${word.article} ${word.word}', style: AppTextStyles.title),
+
+            const SizedBox(height: 8),
+
+            // Meaning/translation
+            Text(
+              'Translation: ${word.meaning}',
+              style: AppTextStyles.translation,
+            ),
+
+            // Divider before example sentences
+            const Divider(height: 40, thickness: 1.2),
+
+            // Example sentences header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Example Sentences:', style: AppTextStyles.subtitle),
+                // Example counter: "Example X of N"
+                if (groupCount > 0)
+                  Text(
+                    'Example ${_exampleGroupIndex + 1} of $groupCount',
+                    style: AppTextStyles.subtitle,
+                  ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Small hint to teach the vertical swipe for examples
+            Text(
+              'Tip: swipe up/down for next example group',
+              style: AppTextStyles.exampleEnglish.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Render the CURRENT example group (3 tenses)
+            ...currentGroup.map(
+              (item) => SentenceItem(
+                label: item.label,
+                german: item.german,
+                english: item.english,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // NEW: "Next Example" button (only if there is >1 group)
+            if (groupCount > 1)
+              Center(
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.arrow_downward),
+                  onPressed: _showNextExampleGroup,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  label: Text('Next Example', style: AppTextStyles.pageCounter),
+                ),
+              ),
+
+            const SizedBox(height: 80),
+
+            // Page counter
+            Center(
+              child: Text(
+                'Word ${currentIndex + 1} of ${_words.length}',
+                style: AppTextStyles.pageCounter,
+              ),
+            ),
+
+            // Spacer so the bottom button doesn’t overlap
+            const SizedBox(height: 120),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-// Reusable Example Sentence widget
+// -----------------------------------------------------------
+/* Reusable Example Sentence widget */
 class SentenceItem extends StatelessWidget {
   final String label;
   final String german;

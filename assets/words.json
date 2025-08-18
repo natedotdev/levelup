@@ -1,194 +1,818 @@
-[
-  {
-    "level": "A1.1",
-    "article": "das",
-    "word": "Buch",
-    "meaning": "book",
-    "examples": {
-      "Present": "Ich lese das Buch.",
-      "Simple Past": "Ich las das Buch.",
-      "Perfect": "Ich habe das Buch gelesen."
+{
+  "A1.1": [
+    {
+      "article": "das",
+      "word": "Buch",
+      "meaning": "book",
+      "examples": [
+        [
+          { "label": "Present", "german": "Ich lese das Buch.", "english": "I read the book." },
+          { "label": "Simple Past", "german": "Ich las das Buch.", "english": "I read the book (past)." },
+          { "label": "Perfect", "german": "Ich habe das Buch gelesen.", "english": "I have read the book." }
+        ],
+        [
+          { "label": "Present", "german": "Das Buch liegt auf dem Tisch.", "english": "The book lies on the table." },
+          { "label": "Simple Past", "german": "Das Buch lag auf dem Tisch.", "english": "The book lay on the table." },
+          { "label": "Perfect", "german": "Das Buch hat auf dem Tisch gelegen.", "english": "The book has lain on the table." }
+        ],
+        [
+          { "label": "Present", "german": "Er kauft ein Buch.", "english": "He buys a book." },
+          { "label": "Simple Past", "german": "Er kaufte ein Buch.", "english": "He bought a book." },
+          { "label": "Perfect", "german": "Er hat ein Buch gekauft.", "english": "He has bought a book." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "I read the book.",
-      "Simple Past": "I read the book (past).",
-      "Perfect": "I have read the book."
-    }
-  },
-  {
-    "level": "A1.2",
-    "article": "der",
-    "word": "Hund",
-    "meaning": "dog",
-    "examples": {
-      "Present": "Der Hund bellt laut.",
-      "Simple Past": "Der Hund bellte laut.",
-      "Perfect": "Der Hund hat laut gebellt."
+    {
+      "article": "der",
+      "word": "Stuhl",
+      "meaning": "chair",
+      "examples": [
+        [
+          { "label": "Present", "german": "Der Stuhl steht am Fenster.", "english": "The chair stands by the window." },
+          { "label": "Simple Past", "german": "Der Stuhl stand am Fenster.", "english": "The chair stood by the window." },
+          { "label": "Perfect", "german": "Der Stuhl hat am Fenster gestanden.", "english": "The chair has stood by the window." }
+        ],
+        [
+          { "label": "Present", "german": "Ich setze mich auf den Stuhl.", "english": "I sit on the chair." },
+          { "label": "Simple Past", "german": "Ich setzte mich auf den Stuhl.", "english": "I sat on the chair." },
+          { "label": "Perfect", "german": "Ich habe mich auf den Stuhl gesetzt.", "english": "I have sat on the chair." }
+        ],
+        [
+          { "label": "Present", "german": "Der Stuhl ist bequem.", "english": "The chair is comfortable." },
+          { "label": "Simple Past", "german": "Der Stuhl war bequem.", "english": "The chair was comfortable." },
+          { "label": "Perfect", "german": "Der Stuhl ist bequem gewesen.", "english": "The chair has been comfortable." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "The dog barks loudly.",
-      "Simple Past": "The dog barked loudly.",
-      "Perfect": "The dog has barked loudly."
+    {
+      "article": "der",
+      "word": "Tisch",
+      "meaning": "table",
+      "examples": [
+        [
+          { "label": "Present", "german": "Der Tisch ist rund.", "english": "The table is round." },
+          { "label": "Simple Past", "german": "Der Tisch war rund.", "english": "The table was round." },
+          { "label": "Perfect", "german": "Der Tisch ist rund gewesen.", "english": "The table has been round." }
+        ],
+        [
+          { "label": "Present", "german": "Wir essen am Tisch.", "english": "We eat at the table." },
+          { "label": "Simple Past", "german": "Wir aßen am Tisch.", "english": "We ate at the table." },
+          { "label": "Perfect", "german": "Wir haben am Tisch gegessen.", "english": "We have eaten at the table." }
+        ],
+        [
+          { "label": "Present", "german": "Der Tisch steht im Wohnzimmer.", "english": "The table stands in the living room." },
+          { "label": "Simple Past", "german": "Der Tisch stand im Wohnzimmer.", "english": "The table stood in the living room." },
+          { "label": "Perfect", "german": "Der Tisch hat im Wohnzimmer gestanden.", "english": "The table has stood in the living room." }
+        ]
+      ]
     }
-  },
-  {
-    "level": "A2.1",
-    "article": "die",
-    "word": "Katze",
-    "meaning": "cat",
-    "examples": {
-      "Present": "Die Katze schläft auf dem Sofa.",
-      "Simple Past": "Die Katze schlief auf dem Sofa.",
-      "Perfect": "Die Katze hat auf dem Sofa geschlafen."
+  ],
+  "A1.2": [
+    {
+      "article": "der",
+      "word": "Hund",
+      "meaning": "dog",
+      "examples": [
+        [
+          { "label": "Present", "german": "Der Hund bellt.", "english": "The dog barks." },
+          { "label": "Simple Past", "german": "Der Hund bellte.", "english": "The dog barked." },
+          { "label": "Perfect", "german": "Der Hund hat gebellt.", "english": "The dog has barked." }
+        ],
+        [
+          { "label": "Present", "german": "Ich füttere den Hund.", "english": "I feed the dog." },
+          { "label": "Simple Past", "german": "Ich fütterte den Hund.", "english": "I fed the dog." },
+          { "label": "Perfect", "german": "Ich habe den Hund gefüttert.", "english": "I have fed the dog." }
+        ],
+        [
+          { "label": "Present", "german": "Der Hund schläft im Garten.", "english": "The dog sleeps in the garden." },
+          { "label": "Simple Past", "german": "Der Hund schlief im Garten.", "english": "The dog slept in the garden." },
+          { "label": "Perfect", "german": "Der Hund hat im Garten geschlafen.", "english": "The dog has slept in the garden." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "The cat sleeps on the sofa.",
-      "Simple Past": "The cat slept on the sofa.",
-      "Perfect": "The cat has slept on the sofa."
-    }
-  },
-  {
-    "level": "A2.2",
-    "article": "das",
-    "word": "Haus",
-    "meaning": "house",
-    "examples": {
-      "Present": "Das Haus steht am See.",
-      "Simple Past": "Das Haus stand am See.",
-      "Perfect": "Das Haus hat am See gestanden."
+    {
+      "article": "die",
+      "word": "Blume",
+      "meaning": "flower",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Blume blüht im Garten.", "english": "The flower blooms in the garden." },
+          { "label": "Simple Past", "german": "Die Blume blühte im Garten.", "english": "The flower bloomed in the garden." },
+          { "label": "Perfect", "german": "Die Blume hat im Garten geblüht.", "english": "The flower has bloomed in the garden." }
+        ],
+        [
+          { "label": "Present", "german": "Ich gieße die Blume.", "english": "I water the flower." },
+          { "label": "Simple Past", "german": "Ich goss die Blume.", "english": "I watered the flower." },
+          { "label": "Perfect", "german": "Ich habe die Blume gegossen.", "english": "I have watered the flower." }
+        ],
+        [
+          { "label": "Present", "german": "Die Blume ist schön.", "english": "The flower is beautiful." },
+          { "label": "Simple Past", "german": "Die Blume war schön.", "english": "The flower was beautiful." },
+          { "label": "Perfect", "german": "Die Blume ist schön gewesen.", "english": "The flower has been beautiful." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "The house stands by the lake.",
-      "Simple Past": "The house stood by the lake.",
-      "Perfect": "The house has stood by the lake."
+    {
+      "article": "das",
+      "word": "Fenster",
+      "meaning": "window",
+      "examples": [
+        [
+          { "label": "Present", "german": "Das Fenster ist offen.", "english": "The window is open." },
+          { "label": "Simple Past", "german": "Das Fenster war offen.", "english": "The window was open." },
+          { "label": "Perfect", "german": "Das Fenster ist offen gewesen.", "english": "The window has been open." }
+        ],
+        [
+          { "label": "Present", "german": "Ich öffne das Fenster.", "english": "I open the window." },
+          { "label": "Simple Past", "german": "Ich öffnete das Fenster.", "english": "I opened the window." },
+          { "label": "Perfect", "german": "Ich habe das Fenster geöffnet.", "english": "I have opened the window." }
+        ],
+        [
+          { "label": "Present", "german": "Ich schließe das Fenster.", "english": "I close the window." },
+          { "label": "Simple Past", "german": "Ich schloss das Fenster.", "english": "I closed the window." },
+          { "label": "Perfect", "german": "Ich habe das Fenster geschlossen.", "english": "I have closed the window." }
+        ]
+      ]
     }
-  },
-  {
-    "level": "B1.1",
-    "article": "der",
-    "word": "Apfel",
-    "meaning": "apple",
-    "examples": {
-      "Present": "Ich esse einen Apfel.",
-      "Simple Past": "Ich aß einen Apfel.",
-      "Perfect": "Ich habe einen Apfel gegessen."
+  ],
+  "A2.1": [
+    {
+      "article": "die",
+      "word": "Katze",
+      "meaning": "cat",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Katze schläft auf dem Sofa.", "english": "The cat sleeps on the sofa." },
+          { "label": "Simple Past", "german": "Die Katze schlief auf dem Sofa.", "english": "The cat slept on the sofa." },
+          { "label": "Perfect", "german": "Die Katze hat auf dem Sofa geschlafen.", "english": "The cat has slept on the sofa." }
+        ],
+        [
+          { "label": "Present", "german": "Die Katze springt vom Stuhl.", "english": "The cat jumps off the chair." },
+          { "label": "Simple Past", "german": "Die Katze sprang vom Stuhl.", "english": "The cat jumped off the chair." },
+          { "label": "Perfect", "german": "Die Katze ist vom Stuhl gesprungen.", "english": "The cat has jumped off the chair." }
+        ],
+        [
+          { "label": "Present", "german": "Ich füttere die Katze.", "english": "I feed the cat." },
+          { "label": "Simple Past", "german": "Ich fütterte die Katze.", "english": "I fed the cat." },
+          { "label": "Perfect", "german": "Ich habe die Katze gefüttert.", "english": "I have fed the cat." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "I eat an apple.",
-      "Simple Past": "I ate an apple.",
-      "Perfect": "I have eaten an apple."
-    }
-  },
-  {
-    "level": "B1.2",
-    "article": "die",
-    "word": "Erfahrung",
-    "meaning": "experience",
-    "examples": {
-      "Present": "Ich sammle Erfahrung.",
-      "Simple Past": "Ich sammelte Erfahrung.",
-      "Perfect": "Ich habe Erfahrung gesammelt."
+    {
+      "article": "der",
+      "word": "Lehrer",
+      "meaning": "teacher",
+      "examples": [
+        [
+          { "label": "Present", "german": "Der Lehrer erklärt die Grammatik.", "english": "The teacher explains the grammar." },
+          { "label": "Simple Past", "german": "Der Lehrer erklärte die Grammatik.", "english": "The teacher explained the grammar." },
+          { "label": "Perfect", "german": "Der Lehrer hat die Grammatik erklärt.", "english": "The teacher has explained the grammar." }
+        ],
+        [
+          { "label": "Present", "german": "Der Lehrer gibt Hausaufgaben.", "english": "The teacher gives homework." },
+          { "label": "Simple Past", "german": "Der Lehrer gab Hausaufgaben.", "english": "The teacher gave homework." },
+          { "label": "Perfect", "german": "Der Lehrer hat Hausaufgaben gegeben.", "english": "The teacher has given homework." }
+        ],
+        [
+          { "label": "Present", "german": "Der Lehrer korrigiert die Tests.", "english": "The teacher corrects the tests." },
+          { "label": "Simple Past", "german": "Der Lehrer korrigierte die Tests.", "english": "The teacher corrected the tests." },
+          { "label": "Perfect", "german": "Der Lehrer hat die Tests korrigiert.", "english": "The teacher has corrected the tests." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "I gain experience.",
-      "Simple Past": "I gained experience.",
-      "Perfect": "I have gained experience."
+    {
+      "article": "die",
+      "word": "Stadt",
+      "meaning": "city",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Stadt wächst schnell.", "english": "The city grows quickly." },
+          { "label": "Simple Past", "german": "Die Stadt wuchs schnell.", "english": "The city grew quickly." },
+          { "label": "Perfect", "german": "Die Stadt ist schnell gewachsen.", "english": "The city has grown quickly." }
+        ],
+        [
+          { "label": "Present", "german": "In der Stadt gibt es viele Parks.", "english": "There are many parks in the city." },
+          { "label": "Simple Past", "german": "In der Stadt gab es viele Parks.", "english": "There were many parks in the city." },
+          { "label": "Perfect", "german": "In der Stadt hat es viele Parks gegeben.", "english": "There have been many parks in the city." }
+        ],
+        [
+          { "label": "Present", "german": "Ich besuche die Stadt.", "english": "I visit the city." },
+          { "label": "Simple Past", "german": "Ich besuchte die Stadt.", "english": "I visited the city." },
+          { "label": "Perfect", "german": "Ich habe die Stadt besucht.", "english": "I have visited the city." }
+        ]
+      ]
     }
-  },
-  {
-    "level": "B2.1",
-    "article": "das",
-    "word": "Thema",
-    "meaning": "topic",
-    "examples": {
-      "Present": "Wir diskutieren das Thema.",
-      "Simple Past": "Wir diskutierten das Thema.",
-      "Perfect": "Wir haben das Thema diskutiert."
+  ],
+  "A2.2": [
+    {
+      "article": "das",
+      "word": "Haus",
+      "meaning": "house",
+      "examples": [
+        [
+          { "label": "Present", "german": "Das Haus steht am See.", "english": "The house stands by the lake." },
+          { "label": "Simple Past", "german": "Das Haus stand am See.", "english": "The house stood by the lake." },
+          { "label": "Perfect", "german": "Das Haus hat am See gestanden.", "english": "The house has stood by the lake." }
+        ],
+        [
+          { "label": "Present", "german": "Wir bauen ein Haus.", "english": "We are building a house." },
+          { "label": "Simple Past", "german": "Wir bauten ein Haus.", "english": "We built a house." },
+          { "label": "Perfect", "german": "Wir haben ein Haus gebaut.", "english": "We have built a house." }
+        ],
+        [
+          { "label": "Present", "german": "Sie kauft ein Haus.", "english": "She buys a house." },
+          { "label": "Simple Past", "german": "Sie kaufte ein Haus.", "english": "She bought a house." },
+          { "label": "Perfect", "german": "Sie hat ein Haus gekauft.", "english": "She has bought a house." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "We discuss the topic.",
-      "Simple Past": "We discussed the topic.",
-      "Perfect": "We have discussed the topic."
-    }
-  },
-  {
-    "level": "B2.2",
-    "article": "der",
-    "word": "Vorteil",
-    "meaning": "advantage",
-    "examples": {
-      "Present": "Der Vorteil ist klar.",
-      "Simple Past": "Der Vorteil war klar.",
-      "Perfect": "Der Vorteil ist klar gewesen."
+    {
+      "article": "die",
+      "word": "Straße",
+      "meaning": "street",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Straße ist lang.", "english": "The street is long." },
+          { "label": "Simple Past", "german": "Die Straße war lang.", "english": "The street was long." },
+          { "label": "Perfect", "german": "Die Straße ist lang gewesen.", "english": "The street has been long." }
+        ],
+        [
+          { "label": "Present", "german": "Die Stadt repariert die Straße.", "english": "The city repairs the street." },
+          { "label": "Simple Past", "german": "Die Stadt reparierte die Straße.", "english": "The city repaired the street." },
+          { "label": "Perfect", "german": "Die Stadt hat die Straße repariert.", "english": "The city has repaired the street." }
+        ],
+        [
+          { "label": "Present", "german": "Ich laufe die Straße entlang.", "english": "I walk along the street." },
+          { "label": "Simple Past", "german": "Ich lief die Straße entlang.", "english": "I walked along the street." },
+          { "label": "Perfect", "german": "Ich bin die Straße entlanggelaufen.", "english": "I have walked along the street." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "The advantage is clear.",
-      "Simple Past": "The advantage was clear.",
-      "Perfect": "The advantage has been clear."
+    {
+      "article": "der",
+      "word": "Regen",
+      "meaning": "rain",
+      "examples": [
+        [
+          { "label": "Present", "german": "Der Regen hört auf.", "english": "The rain stops." },
+          { "label": "Simple Past", "german": "Der Regen hörte auf.", "english": "The rain stopped." },
+          { "label": "Perfect", "german": "Der Regen hat aufgehört.", "english": "The rain has stopped." }
+        ],
+        [
+          { "label": "Present", "german": "Der Regen beginnt.", "english": "The rain begins." },
+          { "label": "Simple Past", "german": "Der Regen begann.", "english": "The rain began." },
+          { "label": "Perfect", "german": "Der Regen hat begonnen.", "english": "The rain has begun." }
+        ],
+        [
+          { "label": "Present", "german": "Der Regen prasselt aufs Dach.", "english": "The rain pelts on the roof." },
+          { "label": "Simple Past", "german": "Der Regen prasselte aufs Dach.", "english": "The rain pelted on the roof." },
+          { "label": "Perfect", "german": "Der Regen hat aufs Dach geprasselt.", "english": "The rain has pelted on the roof." }
+        ]
+      ]
     }
-  },
-  {
-    "level": "C1.1",
-    "article": "die",
-    "word": "Entscheidung",
-    "meaning": "decision",
-    "examples": {
-      "Present": "Die Entscheidung fällt schwer.",
-      "Simple Past": "Die Entscheidung fiel schwer.",
-      "Perfect": "Die Entscheidung ist schwer gefallen."
+  ],
+  "B1.1": [
+    {
+      "article": "der",
+      "word": "Apfel",
+      "meaning": "apple",
+      "examples": [
+        [
+          { "label": "Present", "german": "Ich esse einen Apfel.", "english": "I eat an apple." },
+          { "label": "Simple Past", "german": "Ich aß einen Apfel.", "english": "I ate an apple." },
+          { "label": "Perfect", "german": "Ich habe einen Apfel gegessen.", "english": "I have eaten an apple." }
+        ],
+        [
+          { "label": "Present", "german": "Der Apfel fällt vom Baum.", "english": "The apple falls from the tree." },
+          { "label": "Simple Past", "german": "Der Apfel fiel vom Baum.", "english": "The apple fell from the tree." },
+          { "label": "Perfect", "german": "Der Apfel ist vom Baum gefallen.", "english": "The apple has fallen from the tree." }
+        ],
+        [
+          { "label": "Present", "german": "Ich schäle den Apfel.", "english": "I peel the apple." },
+          { "label": "Simple Past", "german": "Ich schälte den Apfel.", "english": "I peeled the apple." },
+          { "label": "Perfect", "german": "Ich habe den Apfel geschält.", "english": "I have peeled the apple." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "The decision is difficult.",
-      "Simple Past": "The decision was difficult.",
-      "Perfect": "The decision has been difficult."
-    }
-  },
-  {
-    "level": "C1.2",
-    "article": "das",
-    "word": "Ergebnis",
-    "meaning": "result",
-    "examples": {
-      "Present": "Das Ergebnis überzeugt.",
-      "Simple Past": "Das Ergebnis überzeugte.",
-      "Perfect": "Das Ergebnis hat überzeugt."
+    {
+      "article": "das",
+      "word": "Problem",
+      "meaning": "problem",
+      "examples": [
+        [
+          { "label": "Present", "german": "Wir lösen das Problem.", "english": "We solve the problem." },
+          { "label": "Simple Past", "german": "Wir lösten das Problem.", "english": "We solved the problem." },
+          { "label": "Perfect", "german": "Wir haben das Problem gelöst.", "english": "We have solved the problem." }
+        ],
+        [
+          { "label": "Present", "german": "Ein neues Problem entsteht.", "english": "A new problem arises." },
+          { "label": "Simple Past", "german": "Ein neues Problem entstand.", "english": "A new problem arose." },
+          { "label": "Perfect", "german": "Ein neues Problem ist entstanden.", "english": "A new problem has arisen." }
+        ],
+        [
+          { "label": "Present", "german": "Wir besprechen das Problem.", "english": "We discuss the problem." },
+          { "label": "Simple Past", "german": "Wir besprachen das Problem.", "english": "We discussed the problem." },
+          { "label": "Perfect", "german": "Wir haben das Problem besprochen.", "english": "We have discussed the problem." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "The result convinces.",
-      "Simple Past": "The result convinced.",
-      "Perfect": "The result has convinced."
+    {
+      "article": "die",
+      "word": "Nachricht",
+      "meaning": "message",
+      "examples": [
+        [
+          { "label": "Present", "german": "Ich schreibe eine Nachricht.", "english": "I write a message." },
+          { "label": "Simple Past", "german": "Ich schrieb eine Nachricht.", "english": "I wrote a message." },
+          { "label": "Perfect", "german": "Ich habe eine Nachricht geschrieben.", "english": "I have written a message." }
+        ],
+        [
+          { "label": "Present", "german": "Ich bekomme eine Nachricht.", "english": "I receive a message." },
+          { "label": "Simple Past", "german": "Ich bekam eine Nachricht.", "english": "I received a message." },
+          { "label": "Perfect", "german": "Ich habe eine Nachricht bekommen.", "english": "I have received a message." }
+        ],
+        [
+          { "label": "Present", "german": "Ich lese die Nachricht.", "english": "I read the message." },
+          { "label": "Simple Past", "german": "Ich las die Nachricht.", "english": "I read the message (past)." },
+          { "label": "Perfect", "german": "Ich habe die Nachricht gelesen.", "english": "I have read the message." }
+        ]
+      ]
     }
-  },
-  {
-    "level": "C2.1",
-    "article": "der",
-    "word": "Widerspruch",
-    "meaning": "contradiction",
-    "examples": {
-      "Present": "Seine Aussage steht im Widerspruch.",
-      "Simple Past": "Seine Aussage stand im Widerspruch.",
-      "Perfect": "Seine Aussage hat im Widerspruch gestanden."
+  ],
+  "B1.2": [
+    {
+      "article": "die",
+      "word": "Erfahrung",
+      "meaning": "experience",
+      "examples": [
+        [
+          { "label": "Present", "german": "Ich sammle Erfahrung.", "english": "I gain experience." },
+          { "label": "Simple Past", "german": "Ich sammelte Erfahrung.", "english": "I gained experience." },
+          { "label": "Perfect", "german": "Ich habe Erfahrung gesammelt.", "english": "I have gained experience." }
+        ],
+        [
+          { "label": "Present", "german": "Ich bringe Erfahrung mit.", "english": "I bring experience with me." },
+          { "label": "Simple Past", "german": "Ich brachte Erfahrung mit.", "english": "I brought experience with me." },
+          { "label": "Perfect", "german": "Ich habe Erfahrung mitgebracht.", "english": "I have brought experience with me." }
+        ],
+        [
+          { "label": "Present", "german": "Ich teile meine Erfahrung.", "english": "I share my experience." },
+          { "label": "Simple Past", "german": "Ich teilte meine Erfahrung.", "english": "I shared my experience." },
+          { "label": "Perfect", "german": "Ich habe meine Erfahrung geteilt.", "english": "I have shared my experience." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "His statement is in contradiction.",
-      "Simple Past": "His statement was in contradiction.",
-      "Perfect": "His statement has been in contradiction."
-    }
-  },
-  {
-    "level": "C2.2",
-    "article": "die",
-    "word": "Voraussetzung",
-    "meaning": "prerequisite",
-    "examples": {
-      "Present": "Die Voraussetzung ist erfüllt.",
-      "Simple Past": "Die Voraussetzung war erfüllt.",
-      "Perfect": "Die Voraussetzung ist erfüllt gewesen."
+    {
+      "article": "die",
+      "word": "Bewerbung",
+      "meaning": "application",
+      "examples": [
+        [
+          { "label": "Present", "german": "Ich schreibe eine Bewerbung.", "english": "I write an application." },
+          { "label": "Simple Past", "german": "Ich schrieb eine Bewerbung.", "english": "I wrote an application." },
+          { "label": "Perfect", "german": "Ich habe eine Bewerbung geschrieben.", "english": "I have written an application." }
+        ],
+        [
+          { "label": "Present", "german": "Ich sende die Bewerbung ab.", "english": "I send off the application." },
+          { "label": "Simple Past", "german": "Ich sandte die Bewerbung ab.", "english": "I sent off the application." },
+          { "label": "Perfect", "german": "Ich habe die Bewerbung abgesendet.", "english": "I have sent off the application." }
+        ],
+        [
+          { "label": "Present", "german": "Ich bereite die Bewerbung vor.", "english": "I prepare the application." },
+          { "label": "Simple Past", "german": "Ich bereitete die Bewerbung vor.", "english": "I prepared the application." },
+          { "label": "Perfect", "german": "Ich habe die Bewerbung vorbereitet.", "english": "I have prepared the application." }
+        ]
+      ]
     },
-    "translations": {
-      "Present": "The prerequisite is met.",
-      "Simple Past": "The prerequisite was met.",
-      "Perfect": "The prerequisite has been met."
+    {
+      "article": "das",
+      "word": "Projekt",
+      "meaning": "project",
+      "examples": [
+        [
+          { "label": "Present", "german": "Wir starten ein Projekt.", "english": "We start a project." },
+          { "label": "Simple Past", "german": "Wir starteten ein Projekt.", "english": "We started a project." },
+          { "label": "Perfect", "german": "Wir haben ein Projekt gestartet.", "english": "We have started a project." }
+        ],
+        [
+          { "label": "Present", "german": "Wir planen das Projekt.", "english": "We plan the project." },
+          { "label": "Simple Past", "german": "Wir planten das Projekt.", "english": "We planned the project." },
+          { "label": "Perfect", "german": "Wir haben das Projekt geplant.", "english": "We have planned the project." }
+        ],
+        [
+          { "label": "Present", "german": "Wir schließen das Projekt ab.", "english": "We finish the project." },
+          { "label": "Simple Past", "german": "Wir schlossen das Projekt ab.", "english": "We finished the project." },
+          { "label": "Perfect", "german": "Wir haben das Projekt abgeschlossen.", "english": "We have finished the project." }
+        ]
+      ]
     }
-  }
-]
+  ],
+  "B2.1": [
+    {
+      "article": "das",
+      "word": "Thema",
+      "meaning": "topic",
+      "examples": [
+        [
+          { "label": "Present", "german": "Wir diskutieren das Thema.", "english": "We discuss the topic." },
+          { "label": "Simple Past", "german": "Wir diskutierten das Thema.", "english": "We discussed the topic." },
+          { "label": "Perfect", "german": "Wir haben das Thema diskutiert.", "english": "We have discussed the topic." }
+        ],
+        [
+          { "label": "Present", "german": "Wir vertiefen das Thema.", "english": "We deepen the topic." },
+          { "label": "Simple Past", "german": "Wir vertieften das Thema.", "english": "We deepened the topic." },
+          { "label": "Perfect", "german": "Wir haben das Thema vertieft.", "english": "We have deepened the topic." }
+        ],
+        [
+          { "label": "Present", "german": "Wir beleuchten das Thema.", "english": "We shed light on the topic." },
+          { "label": "Simple Past", "german": "Wir beleuchteten das Thema.", "english": "We shed light on the topic." },
+          { "label": "Perfect", "german": "Wir haben das Thema beleuchtet.", "english": "We have shed light on the topic." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Lösung",
+      "meaning": "solution",
+      "examples": [
+        [
+          { "label": "Present", "german": "Wir finden eine Lösung.", "english": "We find a solution." },
+          { "label": "Simple Past", "german": "Wir fanden eine Lösung.", "english": "We found a solution." },
+          { "label": "Perfect", "german": "Wir haben eine Lösung gefunden.", "english": "We have found a solution." }
+        ],
+        [
+          { "label": "Present", "german": "Die Lösung erscheint einfach.", "english": "The solution seems simple." },
+          { "label": "Simple Past", "german": "Die Lösung erschien einfach.", "english": "The solution seemed simple." },
+          { "label": "Perfect", "german": "Die Lösung ist einfach erschienen.", "english": "The solution has appeared simple." }
+        ],
+        [
+          { "label": "Present", "german": "Wir setzen die Lösung um.", "english": "We implement the solution." },
+          { "label": "Simple Past", "german": "Wir setzten die Lösung um.", "english": "We implemented the solution." },
+          { "label": "Perfect", "german": "Wir haben die Lösung umgesetzt.", "english": "We have implemented the solution." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Methode",
+      "meaning": "method",
+      "examples": [
+        [
+          { "label": "Present", "german": "Wir ändern die Methode.", "english": "We change the method." },
+          { "label": "Simple Past", "german": "Wir änderten die Methode.", "english": "We changed the method." },
+          { "label": "Perfect", "german": "Wir haben die Methode geändert.", "english": "We have changed the method." }
+        ],
+        [
+          { "label": "Present", "german": "Wir vergleichen die Methoden.", "english": "We compare the methods." },
+          { "label": "Simple Past", "german": "Wir verglichen die Methoden.", "english": "We compared the methods." },
+          { "label": "Perfect", "german": "Wir haben die Methoden verglichen.", "english": "We have compared the methods." }
+        ],
+        [
+          { "label": "Present", "german": "Wir evaluieren die Methode.", "english": "We evaluate the method." },
+          { "label": "Simple Past", "german": "Wir evaluierten die Methode.", "english": "We evaluated the method." },
+          { "label": "Perfect", "german": "Wir haben die Methode evaluiert.", "english": "We have evaluated the method." }
+        ]
+      ]
+    }
+  ],
+  "B2.2": [
+    {
+      "article": "der",
+      "word": "Vorteil",
+      "meaning": "advantage",
+      "examples": [
+        [
+          { "label": "Present", "german": "Der Vorteil ist klar.", "english": "The advantage is clear." },
+          { "label": "Simple Past", "german": "Der Vorteil war klar.", "english": "The advantage was clear." },
+          { "label": "Perfect", "german": "Der Vorteil ist klar gewesen.", "english": "The advantage has been clear." }
+        ],
+        [
+          { "label": "Present", "german": "Die Lösung bietet einen Vorteil.", "english": "The solution offers an advantage." },
+          { "label": "Simple Past", "german": "Die Lösung bot einen Vorteil.", "english": "The solution offered an advantage." },
+          { "label": "Perfect", "german": "Die Lösung hat einen Vorteil geboten.", "english": "The solution has offered an advantage." }
+        ],
+        [
+          { "label": "Present", "german": "Der Vorteil überwiegt.", "english": "The advantage outweighs." },
+          { "label": "Simple Past", "german": "Der Vorteil überwog.", "english": "The advantage outweighed." },
+          { "label": "Perfect", "german": "Der Vorteil hat überwogen.", "english": "The advantage has outweighed." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Herausforderung",
+      "meaning": "challenge",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Aufgabe ist eine Herausforderung.", "english": "The task is a challenge." },
+          { "label": "Simple Past", "german": "Die Aufgabe war eine Herausforderung.", "english": "The task was a challenge." },
+          { "label": "Perfect", "german": "Die Aufgabe ist eine Herausforderung gewesen.", "english": "The task has been a challenge." }
+        ],
+        [
+          { "label": "Present", "german": "Wir meistern die Herausforderung.", "english": "We master the challenge." },
+          { "label": "Simple Past", "german": "Wir meisterten die Herausforderung.", "english": "We mastered the challenge." },
+          { "label": "Perfect", "german": "Wir haben die Herausforderung gemeistert.", "english": "We have mastered the challenge." }
+        ],
+        [
+          { "label": "Present", "german": "Wir wachsen an der Herausforderung.", "english": "We grow from the challenge." },
+          { "label": "Simple Past", "german": "Wir wuchsen an der Herausforderung.", "english": "We grew from the challenge." },
+          { "label": "Perfect", "german": "Wir sind an der Herausforderung gewachsen.", "english": "We have grown from the challenge." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Kritik",
+      "meaning": "criticism",
+      "examples": [
+        [
+          { "label": "Present", "german": "Er übt Kritik.", "english": "He practices criticism." },
+          { "label": "Simple Past", "german": "Er übte Kritik.", "english": "He practiced criticism." },
+          { "label": "Perfect", "german": "Er hat Kritik geübt.", "english": "He has practiced criticism." }
+        ],
+        [
+          { "label": "Present", "german": "Sie äußert Kritik am Plan.", "english": "She voices criticism about the plan." },
+          { "label": "Simple Past", "german": "Sie äußerte Kritik am Plan.", "english": "She voiced criticism about the plan." },
+          { "label": "Perfect", "german": "Sie hat Kritik am Plan geäußert.", "english": "She has voiced criticism about the plan." }
+        ],
+        [
+          { "label": "Present", "german": "Wir nehmen die Kritik an.", "english": "We accept the criticism." },
+          { "label": "Simple Past", "german": "Wir nahmen die Kritik an.", "english": "We accepted the criticism." },
+          { "label": "Perfect", "german": "Wir haben die Kritik angenommen.", "english": "We have accepted the criticism." }
+        ]
+      ]
+    }
+  ],
+  "C1.1": [
+    {
+      "article": "die",
+      "word": "Entscheidung",
+      "meaning": "decision",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Entscheidung fällt schwer.", "english": "The decision is difficult." },
+          { "label": "Simple Past", "german": "Die Entscheidung fiel schwer.", "english": "The decision was difficult." },
+          { "label": "Perfect", "german": "Die Entscheidung ist schwer gefallen.", "english": "The decision has been difficult." }
+        ],
+        [
+          { "label": "Present", "german": "Wir treffen eine Entscheidung.", "english": "We make a decision." },
+          { "label": "Simple Past", "german": "Wir trafen eine Entscheidung.", "english": "We made a decision." },
+          { "label": "Perfect", "german": "Wir haben eine Entscheidung getroffen.", "english": "We have made a decision." }
+        ],
+        [
+          { "label": "Present", "german": "Wir begründen die Entscheidung.", "english": "We justify the decision." },
+          { "label": "Simple Past", "german": "Wir begründeten die Entscheidung.", "english": "We justified the decision." },
+          { "label": "Perfect", "german": "Wir haben die Entscheidung begründet.", "english": "We have justified the decision." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Entwicklung",
+      "meaning": "development",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Entwicklung verläuft schnell.", "english": "The development progresses quickly." },
+          { "label": "Simple Past", "german": "Die Entwicklung verlief schnell.", "english": "The development progressed quickly." },
+          { "label": "Perfect", "german": "Die Entwicklung ist schnell verlaufen.", "english": "The development has progressed quickly." }
+        ],
+        [
+          { "label": "Present", "german": "Wir beobachten die Entwicklung.", "english": "We observe the development." },
+          { "label": "Simple Past", "german": "Wir beobachteten die Entwicklung.", "english": "We observed the development." },
+          { "label": "Perfect", "german": "Wir haben die Entwicklung beobachtet.", "english": "We have observed the development." }
+        ],
+        [
+          { "label": "Present", "german": "Wir treiben die Entwicklung voran.", "english": "We drive the development forward." },
+          { "label": "Simple Past", "german": "Wir trieben die Entwicklung voran.", "english": "We drove the development forward." },
+          { "label": "Perfect", "german": "Wir haben die Entwicklung vorangetrieben.", "english": "We have driven the development forward." }
+        ]
+      ]
+    },
+    {
+      "article": "der",
+      "word": "Zusammenhang",
+      "meaning": "context",
+      "examples": [
+        [
+          { "label": "Present", "german": "Der Zusammenhang ist komplex.", "english": "The context is complex." },
+          { "label": "Simple Past", "german": "Der Zusammenhang war komplex.", "english": "The context was complex." },
+          { "label": "Perfect", "german": "Der Zusammenhang ist komplex gewesen.", "english": "The context has been complex." }
+        ],
+        [
+          { "label": "Present", "german": "Wir stellen den Zusammenhang her.", "english": "We establish the connection." },
+          { "label": "Simple Past", "german": "Wir stellten den Zusammenhang her.", "english": "We established the connection." },
+          { "label": "Perfect", "german": "Wir haben den Zusammenhang hergestellt.", "english": "We have established the connection." }
+        ],
+        [
+          { "label": "Present", "german": "Wir erkennen den Zusammenhang.", "english": "We recognize the connection." },
+          { "label": "Simple Past", "german": "Wir erkannten den Zusammenhang.", "english": "We recognized the connection." },
+          { "label": "Perfect", "german": "Wir haben den Zusammenhang erkannt.", "english": "We have recognized the connection." }
+        ]
+      ]
+    }
+  ],
+  "C1.2": [
+    {
+      "article": "das",
+      "word": "Ergebnis",
+      "meaning": "result",
+      "examples": [
+        [
+          { "label": "Present", "german": "Das Ergebnis überzeugt.", "english": "The result convinces." },
+          { "label": "Simple Past", "german": "Das Ergebnis überzeugte.", "english": "The result convinced." },
+          { "label": "Perfect", "german": "Das Ergebnis hat überzeugt.", "english": "The result has convinced." }
+        ],
+        [
+          { "label": "Present", "german": "Wir präsentieren das Ergebnis.", "english": "We present the result." },
+          { "label": "Simple Past", "german": "Wir präsentierten das Ergebnis.", "english": "We presented the result." },
+          { "label": "Perfect", "german": "Wir haben das Ergebnis präsentiert.", "english": "We have presented the result." }
+        ],
+        [
+          { "label": "Present", "german": "Wir interpretieren das Ergebnis.", "english": "We interpret the result." },
+          { "label": "Simple Past", "german": "Wir interpretierten das Ergebnis.", "english": "We interpreted the result." },
+          { "label": "Perfect", "german": "Wir haben das Ergebnis interpretiert.", "english": "We have interpreted the result." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Umsetzung",
+      "meaning": "implementation",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Umsetzung gelingt.", "english": "The implementation succeeds." },
+          { "label": "Simple Past", "german": "Die Umsetzung gelang.", "english": "The implementation succeeded." },
+          { "label": "Perfect", "german": "Die Umsetzung ist gelungen.", "english": "The implementation has succeeded." }
+        ],
+        [
+          { "label": "Present", "german": "Wir planen die Umsetzung.", "english": "We plan the implementation." },
+          { "label": "Simple Past", "german": "Wir planten die Umsetzung.", "english": "We planned the implementation." },
+          { "label": "Perfect", "german": "Wir haben die Umsetzung geplant.", "english": "We have planned the implementation." }
+        ],
+        [
+          { "label": "Present", "german": "Die Umsetzung scheitert.", "english": "The implementation fails." },
+          { "label": "Simple Past", "german": "Die Umsetzung scheiterte.", "english": "The implementation failed." },
+          { "label": "Perfect", "german": "Die Umsetzung ist gescheitert.", "english": "The implementation has failed." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Debatte",
+      "meaning": "debate",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Debatte dauert an.", "english": "The debate continues." },
+          { "label": "Simple Past", "german": "Die Debatte dauerte an.", "english": "The debate continued." },
+          { "label": "Perfect", "german": "Die Debatte hat angedauert.", "english": "The debate has continued." }
+        ],
+        [
+          { "label": "Present", "german": "Wir führen eine Debatte.", "english": "We conduct a debate." },
+          { "label": "Simple Past", "german": "Wir führten eine Debatte.", "english": "We conducted a debate." },
+          { "label": "Perfect", "german": "Wir haben eine Debatte geführt.", "english": "We have conducted a debate." }
+        ],
+        [
+          { "label": "Present", "german": "Wir beenden die Debatte.", "english": "We end the debate." },
+          { "label": "Simple Past", "german": "Wir beendeten die Debatte.", "english": "We ended the debate." },
+          { "label": "Perfect", "german": "Wir haben die Debatte beendet.", "english": "We have ended the debate." }
+        ]
+      ]
+    }
+  ],
+  "C2.1": [
+    {
+      "article": "der",
+      "word": "Widerspruch",
+      "meaning": "contradiction",
+      "examples": [
+        [
+          { "label": "Present", "german": "Seine Aussage steht im Widerspruch.", "english": "His statement is in contradiction." },
+          { "label": "Simple Past", "german": "Seine Aussage stand im Widerspruch.", "english": "His statement was in contradiction." },
+          { "label": "Perfect", "german": "Seine Aussage hat im Widerspruch gestanden.", "english": "His statement has been in contradiction." }
+        ],
+        [
+          { "label": "Present", "german": "Wir lösen den Widerspruch auf.", "english": "We resolve the contradiction." },
+          { "label": "Simple Past", "german": "Wir lösten den Widerspruch auf.", "english": "We resolved the contradiction." },
+          { "label": "Perfect", "german": "Wir haben den Widerspruch aufgelöst.", "english": "We have resolved the contradiction." }
+        ],
+        [
+          { "label": "Present", "german": "Er stellt den Widerspruch dar.", "english": "He illustrates the contradiction." },
+          { "label": "Simple Past", "german": "Er stellte den Widerspruch dar.", "english": "He illustrated the contradiction." },
+          { "label": "Perfect", "german": "Er hat den Widerspruch dargestellt.", "english": "He has illustrated the contradiction." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Erkenntnis",
+      "meaning": "insight",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Erkenntnis widerspricht der Annahme.", "english": "The insight contradicts the assumption." },
+          { "label": "Simple Past", "german": "Die Erkenntnis widersprach der Annahme.", "english": "The insight contradicted the assumption." },
+          { "label": "Perfect", "german": "Die Erkenntnis hat der Annahme widersprochen.", "english": "The insight has contradicted the assumption." }
+        ],
+        [
+          { "label": "Present", "german": "Wir gewinnen eine neue Erkenntnis.", "english": "We gain a new insight." },
+          { "label": "Simple Past", "german": "Wir gewannen eine neue Erkenntnis.", "english": "We gained a new insight." },
+          { "label": "Perfect", "german": "Wir haben eine neue Erkenntnis gewonnen.", "english": "We have gained a new insight." }
+        ],
+        [
+          { "label": "Present", "german": "Wir vertiefen die Erkenntnis.", "english": "We deepen the insight." },
+          { "label": "Simple Past", "german": "Wir vertieften die Erkenntnis.", "english": "We deepened the insight." },
+          { "label": "Perfect", "german": "Wir haben die Erkenntnis vertieft.", "english": "We have deepened the insight." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Annahme",
+      "meaning": "assumption",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Annahme ist falsch.", "english": "The assumption is wrong." },
+          { "label": "Simple Past", "german": "Die Annahme war falsch.", "english": "The assumption was wrong." },
+          { "label": "Perfect", "german": "Die Annahme ist falsch gewesen.", "english": "The assumption has been wrong." }
+        ],
+        [
+          { "label": "Present", "german": "Die Annahme bestätigt sich.", "english": "The assumption proves true." },
+          { "label": "Simple Past", "german": "Die Annahme bestätigte sich.", "english": "The assumption proved true." },
+          { "label": "Perfect", "german": "Die Annahme hat sich bestätigt.", "english": "The assumption has proven true." }
+        ],
+        [
+          { "label": "Present", "german": "Wir widerlegen die Annahme.", "english": "We refute the assumption." },
+          { "label": "Simple Past", "german": "Wir widerlegten die Annahme.", "english": "We refuted the assumption." },
+          { "label": "Perfect", "german": "Wir haben die Annahme widerlegt.", "english": "We have refuted the assumption." }
+        ]
+      ]
+    }
+  ],
+  "C2.2": [
+    {
+      "article": "die",
+      "word": "Voraussetzung",
+      "meaning": "prerequisite",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Voraussetzung ist erfüllt.", "english": "The prerequisite is met." },
+          { "label": "Simple Past", "german": "Die Voraussetzung war erfüllt.", "english": "The prerequisite was met." },
+          { "label": "Perfect", "german": "Die Voraussetzung ist erfüllt gewesen.", "english": "The prerequisite has been met." }
+        ],
+        [
+          { "label": "Present", "german": "Wir schaffen die Voraussetzungen.", "english": "We create the prerequisites." },
+          { "label": "Simple Past", "german": "Wir schufen die Voraussetzungen.", "english": "We created the prerequisites." },
+          { "label": "Perfect", "german": "Wir haben die Voraussetzungen geschaffen.", "english": "We have created the prerequisites." }
+        ],
+        [
+          { "label": "Present", "german": "Wir prüfen die Voraussetzungen.", "english": "We check the prerequisites." },
+          { "label": "Simple Past", "german": "Wir prüften die Voraussetzungen.", "english": "We checked the prerequisites." },
+          { "label": "Perfect", "german": "Wir haben die Voraussetzungen geprüft.", "english": "We have checked the prerequisites." }
+        ]
+      ]
+    },
+    {
+      "article": "die",
+      "word": "Ambivalenz",
+      "meaning": "ambivalence",
+      "examples": [
+        [
+          { "label": "Present", "german": "Die Ambivalenz bleibt bestehen.", "english": "The ambivalence remains." },
+          { "label": "Simple Past", "german": "Die Ambivalenz blieb bestehen.", "english": "The ambivalence remained." },
+          { "label": "Perfect", "german": "Die Ambivalenz ist bestehen geblieben.", "english": "The ambivalence has remained." }
+        ],
+        [
+          { "label": "Present", "german": "Wir erkennen die Ambivalenz.", "english": "We recognize the ambivalence." },
+          { "label": "Simple Past", "german": "Wir erkannten die Ambivalenz.", "english": "We recognized the ambivalence." },
+          { "label": "Perfect", "german": "Wir haben die Ambivalenz erkannt.", "english": "We have recognized the ambivalence." }
+        ],
+        [
+          { "label": "Present", "german": "Wir überwinden die Ambivalenz.", "english": "We overcome the ambivalence." },
+          { "label": "Simple Past", "german": "Wir überwanden die Ambivalenz.", "english": "We overcame the ambivalence." },
+          { "label": "Perfect", "german": "Wir haben die Ambivalenz überwunden.", "english": "We have overcome the ambivalence." }
+        ]
+      ]
+    },
+    {
+      "article": "das",
+      "word": "Paradox",
+      "meaning": "paradox",
+      "examples": [
+        [
+          { "label": "Present", "german": "Das Paradox bleibt bestehen.", "english": "The paradox remains." },
+          { "label": "Simple Past", "german": "Das Paradox blieb bestehen.", "english": "The paradox remained." },
+          { "label": "Perfect", "german": "Das Paradox ist bestehen geblieben.", "english": "The paradox has remained." }
+        ],
+        [
+          { "label": "Present", "german": "Wir erklären das Paradox.", "english": "We explain the paradox." },
+          { "label": "Simple Past", "german": "Wir erklärten das Paradox.", "english": "We explained the paradox." },
+          { "label": "Perfect", "german": "Wir haben das Paradox erklärt.", "english": "We have explained the paradox." }
+        ],
+        [
+          { "label": "Present", "german": "Wir zeigen das Paradox auf.", "english": "We point out the paradox." },
+          { "label": "Simple Past", "german": "Wir zeigten das Paradox auf.", "english": "We pointed out the paradox." },
+          { "label": "Perfect", "german": "Wir haben das Paradox aufgezeigt.", "english": "We have pointed out the paradox." }
+        ]
+      ]
+    }
+  ]
+}
