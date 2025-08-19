@@ -1,12 +1,19 @@
+// lib/screens/settings_home.dart
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'settings_screen.dart'; // your existing level picker
+// Theme controller (uses .value to read and .set(ThemeMode) to change)
+import 'package:levelup/theme/theme_controller.dart';
 
-/// /// A top-level Settings hub:
-/// - Shows current level
-/// - Lets user change level (navigates to SettingsScreen)
-/// - (Appearance) placeholder; we’ll wire real theming later
+// Your existing simple level picker screen
+import 'package:levelup/screens/settings_screen.dart';
+
+/// SettingsHomeScreen = small hub for premium-feel settings:
+/// - Appearance (System / Light / Dark)
+/// - Learning level (opens your existing level picker)
+///
+/// NOTE: When a *new level* is picked, this screen pops with that level
+/// so the caller (WordScreen) can reload words immediately.
 class SettingsHomeScreen extends StatefulWidget {
   const SettingsHomeScreen({super.key});
 
@@ -20,42 +27,96 @@ class _SettingsHomeScreenState extends State<SettingsHomeScreen> {
   @override
   void initState() {
     super.initState();
-    _load();
+    _loadLevel();
   }
 
-  Future<void> _load() async {
+  Future<void> _loadLevel() async {
     final prefs = await SharedPreferences.getInstance();
     final lvl = prefs.getString('level');
     if (!mounted) return;
     setState(() => _currentLevel = lvl ?? 'Not set');
   }
 
+  // --- Appearance -----------------------------------------------------------
+
+  String _labelForMode(ThemeMode m) {
+    switch (m) {
+      case ThemeMode.system:
+        return 'System';
+      case ThemeMode.light:
+        return 'Light';
+      case ThemeMode.dark:
+        return 'Dark';
+    }
+  }
+
+  Future<void> _pickTheme() async {
+    final current = ThemeController.instance.value;
+
+    final ThemeMode? chosen = await showModalBottomSheet<ThemeMode>(
+      context: context,
+      showDragHandle: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        final cs = Theme.of(ctx).colorScheme;
+
+        ListTile tile(ThemeMode mode, IconData icon, String label) {
+          final selected = mode == current;
+          return ListTile(
+            leading: Icon(icon, color: cs.primary),
+            title: Text(label),
+            trailing: selected ? Icon(Icons.check, color: cs.primary) : null,
+            onTap: () => Navigator.pop(ctx, mode),
+          );
+        }
+
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              tile(ThemeMode.system, Icons.phone_iphone, 'System'),
+              tile(ThemeMode.light, Icons.light_mode, 'Light'),
+              tile(ThemeMode.dark, Icons.dark_mode, 'Dark'),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (chosen != null) {
+      await ThemeController.instance.set(chosen);
+      if (!mounted) return;
+      setState(() {}); // refresh subtitle text
+    }
+  }
+
+  // --- Level ---------------------------------------------------------------
+
   Future<void> _pickLevel() async {
-    final picked = await Navigator.push<String>(
+    // Open your existing level picker; it returns a String? (level)
+    final newLevel = await Navigator.push<String>(
       context,
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
     );
 
-    if (picked == null) return;
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('level', picked);
-
     if (!mounted) return;
-    setState(() => _currentLevel = picked);
+    if (newLevel != null && newLevel != _currentLevel) {
+      // Persist + update local subtitle
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('level', newLevel);
+      if (!mounted) return;
+      setState(() => _currentLevel = newLevel);
 
-    // IMPORTANT: return to caller (WordScreen) with the new level
-    Navigator.pop(context, picked);
+      // Bubble the new level up to WordScreen so it can reload words
+      Navigator.pop(context, newLevel);
+    }
   }
 
-  void _appearanceToast() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Appearance control coming soon'),
-        duration: Duration(seconds: 1),
-      ),
-    );
-  }
+  // --- UI ------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -64,85 +125,37 @@ class _SettingsHomeScreenState extends State<SettingsHomeScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         children: [
-          _SectionCard(
-            title: 'Appearance',
-            subtitle: 'Dark mode',
-            leading: const Icon(Icons.dark_mode, size: 22),
-            trailing: const Icon(Icons.chevron_right, size: 18),
-            onTap: _appearanceToast,
+          Card(
+            elevation: 2,
+            color: cs.surface,
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: ListTile(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              leading: Icon(Icons.dark_mode, size: 22, color: cs.primary),
+              title: const Text('Appearance'),
+              subtitle: Text(_labelForMode(ThemeController.instance.value)),
+              trailing: Icon(Icons.chevron_right, size: 18, color: cs.onSurfaceVariant),
+              onTap: _pickTheme,
+            ),
           ),
-          const SizedBox(height: 12),
-          _SectionCard(
-            title: 'Learning level',
-            subtitle: _currentLevel,
-            leading: const Icon(Icons.school, size: 22),
-            trailing: const Icon(Icons.chevron_right, size: 18),
-            onTap: _pickLevel,
+          Card(
+            elevation: 2,
+            color: cs.surface,
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: ListTile(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              leading: Icon(Icons.school, size: 22, color: cs.primary),
+              title: const Text('Learning level'),
+              subtitle: Text(_currentLevel),
+              trailing: Icon(Icons.chevron_right, size: 18, color: cs.onSurfaceVariant),
+              onTap: _pickLevel,
+            ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _SectionCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Widget leading;
-  final Widget trailing;
-  final VoidCallback onTap;
-
-  const _SectionCard({
-    required this.title,
-    required this.subtitle,
-    required this.leading,
-    required this.trailing,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return Card(
-      elevation: 0,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          child: Row(
-            children: [
-              leading,
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: cs.onSurface,
-                          ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: cs.onSurfaceVariant,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              trailing,
-            ],
-          ),
-        ),
       ),
     );
   }

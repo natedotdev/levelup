@@ -1,49 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// ThemeController: holds current ThemeMode and persists it.
-class ThemeController extends ValueNotifier<ThemeMode> {
-  ThemeController._internal(super.mode);
+/// ThemeController: singleton + ChangeNotifier
+/// - call `await ThemeController.init()` before runApp
+/// - read current: `ThemeController.instance.value`
+/// - change: `ThemeController.instance.setMode(ThemeMode.dark)`
+/// - toggle: `ThemeController.instance.toggle()`
+class ThemeController extends ChangeNotifier {
+  static const _prefsKey = 'themeMode';
+  static final ThemeController instance = ThemeController._();
+  ThemeController._();
 
-  // Singleton instance
-  static late final ThemeController instance;
+  ThemeMode _mode = ThemeMode.light;
+  ThemeMode get value => _mode;
 
-  /// Call once before runApp()
   static Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
-    final saved = prefs.getString('themeMode'); // 'light' | 'dark' | 'system'
-    final mode = _stringToMode(saved) ?? ThemeMode.light;
-    instance = ThemeController._internal(mode);
+    final stored = prefs.getString(_prefsKey);
+    if (stored == 'dark') {
+      instance._mode = ThemeMode.dark;
+    } else if (stored == 'system') {
+      instance._mode = ThemeMode.system;
+    } else {
+      instance._mode = ThemeMode.light;
+    }
+  }
+
+  Future<void> setMode(ThemeMode mode) async {
+    _mode = mode;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      _prefsKey,
+      mode == ThemeMode.dark ? 'dark' : (mode == ThemeMode.system ? 'system' : 'light'),
+    );
   }
 
   Future<void> toggle() async {
-    // light -> dark -> light (skip system for simplicity)
-    value = (value == ThemeMode.light) ? ThemeMode.dark : ThemeMode.light;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('themeMode', _modeToString(value));
-    notifyListeners();
+    // Simple light <-> dark toggle (you can add 'system' in your settings UI)
+    await setMode(_mode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark);
   }
 
-  static ThemeMode? _stringToMode(String? s) {
-    switch (s) {
-      case 'light':
-        return ThemeMode.light;
-      case 'dark':
-        return ThemeMode.dark;
-      case 'system':
-        return ThemeMode.system;
-    }
-    return null;
-  }
-
-  static String _modeToString(ThemeMode m) {
-    switch (m) {
-      case ThemeMode.light:
-        return 'light';
-      case ThemeMode.dark:
-        return 'dark';
-      case ThemeMode.system:
-        return 'system';
-    }
-  }
+  Future<void> set(ThemeMode temp) async {}
 }
