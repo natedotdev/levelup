@@ -1,43 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// TEXT STYLES (your existing set)
 import 'package:levelup/theme/app_text_styles.dart';
 
-// NEW: repo + models
+// REPO + MODELS (new exampleGroups shape)
 import 'data/word_repository.dart';
 import 'models/german_word.dart';
 
-// NEW: separate onboarding screen
+// ONBOARDING (unchanged API: returns chosen level)
 import 'screens/onboarding_screen.dart';
 
-// Settings screen
-import 'screens/settings_screen.dart';
+// SETTINGS HOME (premium-style page: theme + level)
+import 'screens/settings_home.dart';
 
-void main() {
+// THEME
+import 'theme/app_theme.dart';
+import 'theme/theme_controller.dart';
+
+/// -----------------------------------------------------------
+/// App bootstrap: ensure bindings, load ThemeController, then run
+/// -----------------------------------------------------------
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ThemeController.init(); // load saved theme before runApp
   runApp(const LevelUpApp());
 }
 
-// -----------------------------------------------------------
-// Main App entry
-// -----------------------------------------------------------
+/// -----------------------------------------------------------
+/// Main App entry (theme-aware)
+/// -----------------------------------------------------------
 class LevelUpApp extends StatelessWidget {
   const LevelUpApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'LevelUp',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const RootScreen(), // decide onboarding or word screen
-      debugShowCheckedModeBanner: false,
+    return AnimatedBuilder(
+      // Rebuild MaterialApp when theme mode changes
+      animation: ThemeController.instance,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'LevelUp',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light,        // premium light
+          darkTheme: AppTheme.dark,     // premium dark
+          themeMode: ThemeController.instance.value,
+          home: const RootScreen(),     // decide onboarding or word screen
+        );
+      },
     );
   }
 }
 
-// -----------------------------------------------------------
-// RootScreen → checks SharedPreferences
-// If no level → show Onboarding
-// If level exists → show WordScreen
-// -----------------------------------------------------------
+/// -----------------------------------------------------------
+/// RootScreen → checks SharedPreferences
+/// If no level → show Onboarding
+/// If level exists → show WordScreen
+/// -----------------------------------------------------------
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
 
@@ -67,21 +86,18 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Loading state (first app start)
     if (_loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     // If no level chosen → go to onboarding
     if (_level == null) {
-      return OnboardingScreen(
-        onLevelSelected: (level) async {
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('level', level);
-          if (!mounted) return;
-          setState(() => _level = level);
-        },
-      );
+      return OnboardingScreen(onLevelSelected: (level) async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('level', level);
+        if (!mounted) return;
+        setState(() => _level = level);
+      });
     }
 
     // If level already chosen → go to words
@@ -89,13 +105,14 @@ class _RootScreenState extends State<RootScreen> {
   }
 }
 
-// -----------------------------------------------------------
-// WordScreen → shows words filtered by chosen level
-// - Unified AppBar (same in all states) with a Settings button
-// - Swipe left/right to switch words
-// - Swipe up/down to switch example groups
-// - "Next Word" button fixed at the bottom
-// -----------------------------------------------------------
+/// -----------------------------------------------------------
+/// WordScreen → shows words filtered by chosen level
+/// - Premium AppBar with Settings (⚙️)
+/// - Swipe left/right to switch words
+/// - Swipe up/down OR tap button to switch **example group**
+/// - Content uses modern rounded **Cards**
+/// - “Next Word” button fixed at the bottom
+/// -----------------------------------------------------------
 class WordScreen extends StatefulWidget {
   final String level;
   const WordScreen({super.key, required this.level});
@@ -106,8 +123,8 @@ class WordScreen extends StatefulWidget {
 
 class _WordScreenState extends State<WordScreen> {
   List<GermanWord> _words = [];
-  int currentIndex = 0;
-  int _exampleGroupIndex = 0; // NEW: which example group within the word
+  int currentIndex = 0;     // which word we’re showing right now
+  int _exampleIndex = 0;    // which example group of the current word
   bool _loading = true;
   String? _error;
 
@@ -124,8 +141,8 @@ class _WordScreenState extends State<WordScreen> {
       if (!mounted) return;
       setState(() {
         _words = loaded;
-        currentIndex = 0; // always start at first item for a level
-        _exampleGroupIndex = 0; // and first example group
+        currentIndex = 0;   // always start at first item for a level
+        _exampleIndex = 0;  // and the first example group
         _loading = false;
       });
     } catch (e) {
@@ -142,7 +159,7 @@ class _WordScreenState extends State<WordScreen> {
     if (_words.isEmpty) return;
     setState(() {
       currentIndex = (currentIndex + 1) % _words.length;
-      _exampleGroupIndex = 0; // reset examples when word changes
+      _exampleIndex = 0; // reset example group when word changes
     });
   }
 
@@ -151,62 +168,58 @@ class _WordScreenState extends State<WordScreen> {
     if (_words.isEmpty) return;
     setState(() {
       currentIndex = (currentIndex - 1 + _words.length) % _words.length;
-      _exampleGroupIndex = 0; // reset examples when word changes
+      _exampleIndex = 0; // reset example group when word changes
     });
   }
 
-  /// Next example group for current word (wrap around)
-  void _showNextExampleGroup() {
-    final groups = _currentWord?.examplesGroups ?? const [];
+  /// Next example group (wrap around)
+  void _nextExample() {
+    final groups = _words[currentIndex].exampleGroups;
     if (groups.isEmpty) return;
     setState(() {
-      _exampleGroupIndex = (_exampleGroupIndex + 1) % groups.length;
+      _exampleIndex = (_exampleIndex + 1) % groups.length;
     });
   }
-
-  /// Previous example group for current word (wrap around)
-  void _showPreviousExampleGroup() {
-    final groups = _currentWord?.examplesGroups ?? const [];
-    if (groups.isEmpty) return;
-    setState(() {
-      _exampleGroupIndex =
-          (_exampleGroupIndex - 1 + groups.length) % groups.length;
-    });
-  }
-
-  GermanWord? get _currentWord =>
-      (_words.isEmpty) ? null : _words[currentIndex];
 
   /// One place to define the AppBar so it is consistent across states
   AppBar _buildAppBar() {
     return AppBar(
       title: Text('Wort des Tages – ${widget.level}'),
       actions: [
+        // Theme toggle
+        IconButton(
+          tooltip: 'Toggle theme',
+          icon: Icon(
+            ThemeController.instance.value == ThemeMode.light
+                ? Icons.dark_mode
+                : Icons.light_mode,
+          ),
+          onPressed: ThemeController.instance.toggle,
+        ),
+        // Settings (⚙️) → premium settings home (theme + level)
         IconButton(
           icon: const Icon(Icons.settings),
           tooltip: 'Settings',
           onPressed: () async {
-            // 1) Navigate to Settings (await result)
+            // Open the new settings hub (returns a picked level if changed)
             final newLevel = await Navigator.push<String>(
               context,
-              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              MaterialPageRoute(builder: (_) => const SettingsHomeScreen()),
             );
-
-            // 2) After an await, always check mounted before using context/state
             if (!mounted) return;
 
-            // 3) Persist & rebuild if level changed
             if (newLevel != null && newLevel != widget.level) {
               final prefs = await SharedPreferences.getInstance();
               await prefs.setString('level', newLevel);
 
-              if (!mounted) return; // extra safety before navigation
+              if (!mounted) return;
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => WordScreen(level: newLevel)),
               );
             }
           },
+
         ),
       ],
     );
@@ -222,9 +235,7 @@ class _WordScreenState extends State<WordScreen> {
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         onPressed: _showNextWord,
         child: const Text('Next Word'),
@@ -250,34 +261,28 @@ class _WordScreenState extends State<WordScreen> {
     }
 
     // Normal state
-    final word = _currentWord!;
-    final groups = word.examplesGroups;
-    final groupCount = groups.length;
-    final currentGroup = (groupCount == 0)
-        ? const <ExampleItem>[]
-        : groups[_exampleGroupIndex];
+    final word = _words[currentIndex];
+    final groups = word.exampleGroups;
+    final bool hasGroups = groups.isNotEmpty;
+    final group = hasGroups ? groups[_exampleIndex] : null;
 
+    // GestureDetector on the whole screen:
+    // - horizontal → change word
+    // - vertical   → change example group
     return GestureDetector(
-      behavior: HitTestBehavior.opaque, // full-screen swipe area
-      // Horizontal: switch word
+      behavior: HitTestBehavior.opaque, // full-screen swipe area, no dead zones
       onHorizontalDragEnd: (details) {
         if (details.primaryVelocity != null) {
           if (details.primaryVelocity! < 0) {
-            _showNextWord(); // right-to-left
+            _showNextWord();      // right-to-left
           } else if (details.primaryVelocity! > 0) {
-            _showPreviousWord(); // left-to-right
+            _showPreviousWord();  // left-to-right
           }
         }
       },
-
-      // Vertical: switch example group
       onVerticalDragEnd: (details) {
         if (details.primaryVelocity != null) {
-          if (details.primaryVelocity! < 0) {
-            _showNextExampleGroup(); // swipe up → next example group
-          } else if (details.primaryVelocity! > 0) {
-            _showPreviousExampleGroup(); // swipe down → previous example group
-          }
+          _nextExample(); // swipe up/down → next example group
         }
       },
 
@@ -286,74 +291,103 @@ class _WordScreenState extends State<WordScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Word + article
-            Text('${word.article} ${word.word}', style: AppTextStyles.title),
-
-            const SizedBox(height: 8),
-
-            // Meaning/translation
-            Text(
-              'Translation: ${word.meaning}',
-              style: AppTextStyles.translation,
-            ),
-
-            // Divider before example sentences
-            const Divider(height: 40, thickness: 1.2),
-
-            // Example sentences header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Example Sentences:', style: AppTextStyles.subtitle),
-                // Example counter: "Example X of N"
-                if (groupCount > 0)
-                  Text(
-                    'Example ${_exampleGroupIndex + 1} of $groupCount',
-                    style: AppTextStyles.subtitle,
-                  ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Small hint to teach the vertical swipe for examples
-            Text(
-              'Tip: swipe up/down for next example group',
-              style: AppTextStyles.exampleEnglish.copyWith(
-                fontStyle: FontStyle.italic,
+            // =========================================================
+            // Word Card (title + translation) — premium rounded card
+            // =========================================================
+            Card(
+              elevation: 0,
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
-            ),
-            const SizedBox(height: 8),
-
-            // Render the CURRENT example group (3 tenses)
-            ...currentGroup.map(
-              (item) => SentenceItem(
-                label: item.label,
-                german: item.german,
-                english: item.english,
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // NEW: "Next Example" button (only if there is >1 group)
-            if (groupCount > 1)
-              Center(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.arrow_downward),
-                  onPressed: _showNextExampleGroup,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  label: Text('Next Example', style: AppTextStyles.pageCounter),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('${word.article} ${word.word}', style: AppTextStyles.title),
+                    const SizedBox(height: 8),
+                    Text('Translation: ${word.meaning}',
+                        style: AppTextStyles.translation),
+                  ],
                 ),
               ),
+            ),
 
-            const SizedBox(height: 80),
+            // =========================================================
+            // Example Card (header + current example group)
+            // =========================================================
+            Card(
+              elevation: 0,
+              margin: const EdgeInsets.only(bottom: 24),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header + example group counter
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Example Sentences:', style: AppTextStyles.subtitle),
+                        if (hasGroups)
+                          Text(
+                            'Example ${_exampleIndex + 1} of ${groups.length}',
+                            style: AppTextStyles.subtitle,
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Tip: swipe up/down for next example group',
+                      style: AppTextStyles.exampleEnglish,
+                    ),
+                    const SizedBox(height: 12),
+
+                    if (!hasGroups) ...[
+                      const Text('No example groups found'),
+                    ] else ...[
+                      SentenceItem(
+                        label: 'Present',
+                        german: group!.present.german,
+                        english: group.present.english,
+                      ),
+                      SentenceItem(
+                        label: 'Simple Past',
+                        german: group.simplePast.german,
+                        english: group.simplePast.english,
+                      ),
+                      SentenceItem(
+                        label: 'Perfect',
+                        german: group.perfect.german,
+                        english: group.perfect.english,
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // Next Example (small pill button in the card)
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: _nextExample,
+                          icon: const Icon(Icons.south),
+                          label: const Text('Next Example'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 18, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
 
             // Page counter
             Center(
@@ -372,8 +406,9 @@ class _WordScreenState extends State<WordScreen> {
   }
 }
 
-// -----------------------------------------------------------
-/* Reusable Example Sentence widget */
+/// -----------------------------------------------------------
+/// Reusable Example Sentence widget (unchanged)
+/// -----------------------------------------------------------
 class SentenceItem extends StatelessWidget {
   final String label;
   final String german;
